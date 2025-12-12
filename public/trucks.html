@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trucks Management - MizigoSmart Admin</title>
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/trucks.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body class="admin-layout">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-brand">
+                <i class="fas fa-shipping-fast"></i>
+                <span>MizigoSmart</span>
+                <small>Admin</small>
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-profile">
+            <div class="profile-image">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="profile-info">
+                <h4 id="adminName">Admin User</h4>
+                <span class="profile-role">Administrator</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="bookings.html" class="sidebar-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Bookings</span>
+                        <span class="badge badge-primary" id="bookingBadge">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trips.html" class="sidebar-link">
+                        <i class="fas fa-route"></i>
+                        <span>Trips</span>
+                        <span class="badge badge-warning" id="tripBadge">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trucks.html" class="sidebar-link active">
+                        <i class="fas fa-truck"></i>
+                        <span>Trucks</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="drivers.html" class="sidebar-link">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Drivers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="users.html" class="sidebar-link">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="analytics.html" class="sidebar-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                           
+   
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <div class="navbar-left">
+            <button class="navbar-toggle" id="navbarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="navbar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="globalSearch" placeholder="Search trucks...">
+            </div>
+        </div>
+        
+        <div class="navbar-right">
+            <div class="navbar-notifications">
+                <button class="notification-btn" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h4>Notifications</h4>
+                        <button class="mark-read">Mark all as read</button>
+                    </div>
+                    <div class="notification-list">
+                        <!-- Notifications will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navbar-user">
+                <div class="user-dropdown" id="userDropdown">
+                    <button class="user-btn">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <span id="userName">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i> My Profile
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" id="adminLogoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-left">
+                    <h1>Truck Fleet Management</h1>
+                    <p class="page-subtitle">Manage and monitor your entire truck fleet</p>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="addTruckBtn">
+                            <i class="fas fa-plus"></i> Add New Truck
+                        </button>
+                        <button class="btn btn-outline" id="exportTrucks">
+                            <i class="fas fa-file-export"></i> Export
+                        </button>
+                        <button class="btn btn-outline" id="refreshTrucks">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <span id="successText">Truck added successfully!</span>
+            </div>
+
+            <!-- Trucks Overview -->
+            <div class="trucks-overview">
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Total Trucks</h3>
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="stat-value" id="totalTrucksCount">0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> <span id="trucksThisMonth">0</span> this month
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Available</h3>
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value" id="availableTrucks">0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> <span id="availableToday">0</span> today
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>On Trip</h3>
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="stat-value" id="onTripTrucks">0</div>
+                    <div class="stat-change negative">
+                        <i class="fas fa-arrow-down"></i> <span id="tripsYesterday">0</span> from yesterday
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Maintenance</h3>
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="stat-value" id="maintenanceTrucks">0</div>
+                    <div class="stat-change warning">
+                        <i class="fas fa-exclamation-triangle"></i> <span id="urgentMaintenance">0</span> urgent
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fleet Map -->
+            <div class="fleet-map-card">
+                <div class="card-header">
+                    <h3>Fleet Live Location</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-outline" id="refreshFleetMap">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-sm btn-primary" id="filterFleet">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="fleetMap" class="fleet-map">
+                        <!-- Map will be loaded here -->
+                    </div>
+                    <div class="fleet-stats">
+                        <div class="fleet-stat-item">
+                            <i class="fas fa-truck-moving"></i>
+                            <div>
+                                <h4 id="activeTrucksCount">0</h4>
+                                <span>Active Trucks</span>
+                            </div>
+                        </div>
+                        <div class="fleet-stat-item">
+                            <i class="fas fa-gas-pump"></i>
+                            <div>
+                                <h4 id="lowFuelCount">0</h4>
+                                <span>Low Fuel</span>
+                            </div>
+                        </div>
+                        <div class="fleet-stat-item">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <h4 id="activeAlerts">0</h4>
+                                <span>Alerts</span>
+                            </div>
+                        </div>
+                        <div class="fleet-stat-item">
+                            <i class="fas fa-route"></i>
+                            <div>
+                                <h4 id="avgDailyDistance">0km</h4>
+                                <span>Avg Daily Distance</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maintenance Alerts -->
+            <div class="alerts-card">
+                <div class="card-header">
+                    <h3>Maintenance Alerts</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-outline" id="viewAllAlerts">
+                            View All
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alerts-list" id="maintenanceAlerts">
+                        <!-- Maintenance alerts will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trucks Table -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>All Trucks</h3>
+                    <div class="table-actions">
+                        <div class="table-info" id="tableInfo">
+                            Showing 0 trucks
+                        </div>
+                        <div class="table-controls">
+                            <button class="btn btn-sm btn-outline" id="bulkActionsBtn">
+                                <i class="fas fa-cog"></i> Bulk Actions
+                            </button>
+                            <select id="itemsPerPage" class="items-per-page">
+                                <option value="10">10 per page</option>
+                                <option value="25">25 per page</option>
+                                <option value="50">50 per page</option>
+                                <option value="100">100 per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="data-table" id="trucksTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="selectAll">
+                                </th>
+                                <th>Truck ID</th>
+                                <th>Registration</th>
+                                <th>Type</th>
+                                <th>Model</th>
+                                <th>Capacity</th>
+                                <th>Status</th>
+                                <th>Current Driver</th>
+                                <th>Location</th>
+                                <th>Fuel</th>
+                                <th>Distance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trucksTableBody">
+                            <!-- Trucks will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-footer">
+                    <div class="pagination-info" id="paginationInfo">
+                        Page 1 of 1
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pagination-btn" id="firstPage" disabled>
+                            <i class="fas fa-angle-double-left"></i>
+                        </button>
+                        <button class="pagination-btn" id="prevPage" disabled>
+                            <i class="fas fa-angle-left"></i>
+                        </button>
+                        <div class="page-numbers" id="pageNumbers">
+                            <button class="page-number active">1</button>
+                        </div>
+                        <button class="pagination-btn" id="nextPage" disabled>
+                            <i class="fas fa-angle-right"></i>
+                        </button>
+                        <button class="pagination-btn" id="lastPage" disabled>
+                            <i class="fas fa-angle-double-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Truck Modal -->
+    <div class="modal" id="truckFormModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="formModalTitle">Add New Truck</h3>
+                <button class="modal-close" onclick="closeModal('#truckFormModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="truckForm">
+                    <div class="form-tabs">
+                        <button type="button" class="form-tab active" data-tab="basic">Basic Info</button>
+                        <button type="button" class="form-tab" data-tab="specs">Specifications</button>
+                        <button type="button" class="form-tab" data-tab="docs">Documents</button>
+                        <button type="button" class="form-tab" data-tab="status">Status</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="basicTab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Truck ID *</label>
+                                <input type="text" id="truckId" required placeholder="e.g., TRK-001">
+                                <div class="error-message" id="truckIdError">Truck ID is required</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Registration Number *</label>
+                                <input type="text" id="regNumber" required placeholder="e.g., KBE123R">
+                                <div class="error-message" id="regNumberError">Registration number is required</div>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Make *</label>
+                                <input type="text" id="make" required placeholder="e.g., Mercedes-Benz">
+                                <div class="error-message" id="makeError">Make is required</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Model *</label>
+                                <input type="text" id="model" required placeholder="e.g., Actros">
+                                <div class="error-message" id="modelError">Model is required</div>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Year *</label>
+                                <input type="number" id="year" required min="2000" max="2025" value="2024">
+                                <div class="error-message" id="yearError">Valid year is required (2000-2025)</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Color</label>
+                                <input type="text" id="color" placeholder="e.g., White">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>VIN (Vehicle Identification Number)</label>
+                            <input type="text" id="vin" placeholder="17-character VIN">
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="specsTab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Truck Type *</label>
+                                <select id="truckType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="box">Box Truck</option>
+                                    <option value="flatbed">Flatbed Truck</option>
+                                    <option value="refrigerated">Refrigerated Truck</option>
+                                    <option value="tanker">Tanker Truck</option>
+                                    <option value="pickup">Pickup Truck</option>
+                                    <option value="dump">Dump Truck</option>
+                                </select>
+                                <div class="error-message" id="truckTypeError">Truck type is required</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Capacity *</label>
+                                <div class="capacity-input">
+                                    <input type="number" id="capacity" required min="1" placeholder="e.g., 5">
+                                    <select id="capacityUnit">
+                                        <option value="tons">Tons</option>
+                                        <option value="kg">Kg</option>
+                                        <option value="lbs">Lbs</option>
+                                    </select>
+                                </div>
+                                <div class="error-message" id="capacityError">Capacity is required</div>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Fuel Type *</label>
+                                <select id="fuelType" required>
+                                    <option value="">Select Fuel Type</option>
+                                    <option value="diesel">Diesel</option>
+                                    <option value="petrol">Petrol</option>
+                                    <option value="electric">Electric</option>
+                                    <option value="cng">CNG</option>
+                                    <option value="hybrid">Hybrid</option>
+                                </select>
+                                <div class="error-message" id="fuelTypeError">Fuel type is required</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Fuel Capacity</label>
+                                <div class="fuel-input">
+                                    <input type="number" id="fuelCapacity" min="1" placeholder="e.g., 200">
+                                    <select id="fuelUnit">
+                                        <option value="liters">Liters</option>
+                                        <option value="gallons">Gallons</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Length (m)</label>
+                                <input type="number" id="length" step="0.1" min="1" placeholder="e.g., 8.2">
+                            </div>
+                            <div class="form-group">
+                                <label>Width (m)</label>
+                                <input type="number" id="width" step="0.1" min="1" placeholder="e.g., 2.5">
+                            </div>
+                            <div class="form-group">
+                                <label>Height (m)</label>
+                                <input type="number" id="height" step="0.1" min="1" placeholder="e.g., 2.8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Special Features</label>
+                            <textarea id="specialFeatures" rows="3" placeholder="Any special features or equipment..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="docsTab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Insurance Provider</label>
+                                <input type="text" id="insuranceProvider" placeholder="Insurance company name">
+                            </div>
+                            <div class="form-group">
+                                <label>Policy Number</label>
+                                <input type="text" id="policyNumber" placeholder="Insurance policy number">
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Insurance Expiry</label>
+                                <input type="date" id="insuranceExpiry">
+                            </div>
+                            <div class="form-group">
+                                <label>Registration Expiry</label>
+                                <input type="date" id="registrationExpiry">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Additional Notes</label>
+                            <textarea id="notes" rows="4" placeholder="Any additional notes or information..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="statusTab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Initial Status *</label>
+                                <select id="initialStatus" required>
+                                    <option value="available">Available</option>
+                                    <option value="on-trip">On Trip</option>
+                                    <option value="maintenance">Under Maintenance</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                                <div class="error-message" id="initialStatusError">Initial status is required</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Current Fuel Level (%)</label>
+                                <input type="number" id="fuelLevel" min="0" max="100" value="100" placeholder="0-100">
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Current Mileage (km)</label>
+                                <input type="number" id="currentMileage" min="0" placeholder="e.g., 45230">
+                            </div>
+                            <div class="form-group">
+                                <label>Daily Distance (km)</label>
+                                <input type="number" id="dailyDistance" min="0" placeholder="e.g., 250">
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Last Service Date</label>
+                                <input type="date" id="lastServiceDate">
+                            </div>
+                            <div class="form-group">
+                                <label>Next Service Due</label>
+                                <input type="date" id="nextServiceDate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Assign to Driver (Optional)</label>
+                            <select id="assignDriver">
+                                <option value="">No Driver Assigned</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" id="prevTabBtn">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-primary" id="nextTabBtn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button type="submit" class="btn btn-success" id="submitTruckBtn" style="display: none;">
+                            <i class="fas fa-check"></i> Save Truck
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Truck Details Modal -->
+    <div class="modal" id="truckDetailsModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="detailTruckId">Truck Details</h3>
+                <button class="modal-close" onclick="closeModal('#truckDetailsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="truck-details-container">
+                    <div class="details-header">
+                        <div class="truck-basic-info">
+                            <h4 id="detailMakeModel"></h4>
+                            <div class="truck-status-large">
+                                <span class="status-badge" id="detailTruckStatus">Available</span>
+                            </div>
+                        </div>
+                        <div class="truck-actions">
+                            <button class="btn btn-outline" id="editTruckBtn">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-primary" id="assignDriverBtn">
+                                <i class="fas fa-user-tie"></i> Assign Driver
+                            </button>
+                            <button class="btn btn-warning" id="updateStatusBtn">
+                                <i class="fas fa-sync-alt"></i> Update Status
+                            </button>
+                            <button class="btn btn-danger" id="deleteTruckBtn">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="details-tabs">
+                        <button class="detail-tab active" data-tab="overview">Overview</button>
+                        <button class="detail-tab" data-tab="tracking">Live Tracking</button>
+                        <button class="detail-tab" data-tab="maintenance">Maintenance</button>
+                        <button class="detail-tab" data-tab="trips">Trips</button>
+                    </div>
+                    
+                    <div class="detail-content active" id="overviewTab">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h5>Basic Information</h5>
+                                <div class="detail-item">
+                                    <span class="detail-label">Truck ID:</span>
+                                    <span class="detail-value" id="detailId"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Registration:</span>
+                                    <span class="detail-value" id="detailRegistration"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Make/Model:</span>
+                                    <span class="detail-value" id="detailMakeModelFull"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Year:</span>
+                                    <span class="detail-value" id="detailYear"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Color:</span>
+                                    <span class="detail-value" id="detailColor"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h5>Specifications</h5>
+                                <div class="detail-item">
+                                    <span class="detail-label">Type:</span>
+                                    <span class="detail-value" id="detailType"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Capacity:</span>
+                                    <span class="detail-value" id="detailCapacity"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Fuel Type:</span>
+                                    <span class="detail-value" id="detailFuelType"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Dimensions:</span>
+                                    <span class="detail-value" id="detailDimensions"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h5>Status & Metrics</h5>
+                                <div class="detail-item">
+                                    <span class="detail-label">Current Status:</span>
+                                    <span class="detail-value">
+                                        <span class="status-badge" id="detailStatusBadge"></span>
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Fuel Level:</span>
+                                    <span class="detail-value">
+                                        <div class="fuel-indicator">
+                                            <div class="fuel-bar" id="detailFuelBar"></div>
+                                            <span id="detailFuelLevel">100%</span>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Current Location:</span>
+                                    <span class="detail-value" id="detailLocation"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Distance Covered:</span>
+                                    <span class="detail-value" id="detailDistance"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h5>Driver Information</h5>
+                                <div class="detail-item">
+                                    <span class="detail-label">Assigned Driver:</span>
+                                    <span class="detail-value" id="detailDriver"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Driver Contact:</span>
+                                    <span class="detail-value" id="detailDriverContact"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Driver Status:</span>
+                                    <span class="detail-value">
+                                        <span class="status-badge" id="detailDriverStatus"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-content" id="trackingTab">
+                        <div class="tracking-container">
+                            <div id="liveTrackingMap"></div>
+                            <div class="tracking-info">
+                                <h5>Live Tracking</h5>
+                                <div class="tracking-item">
+                                    <span class="tracking-label">Current Speed:</span>
+                                    <span class="tracking-value" id="detailSpeed">0 km/h</span>
+                                </div>
+                                <div class="tracking-item">
+                                    <span class="tracking-label">Last Update:</span>
+                                    <span class="tracking-value" id="detailLastUpdate">Just now</span>
+                                </div>
+                                <div class="tracking-item">
+                                    <span class="tracking-label">Route Distance:</span>
+                                    <span class="tracking-value" id="detailRouteDistance">0 km</span>
+                                </div>
+                                <button class="btn btn-sm btn-primary" id="refreshTracking">
+                                    <i class="fas fa-sync-alt"></i> Refresh Location
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-content" id="maintenanceTab">
+                        <div class="maintenance-actions">
+                            <button class="btn btn-primary" id="scheduleMaintenanceBtn">
+                                <i class="fas fa-calendar-plus"></i> Schedule Maintenance
+                            </button>
+                            <button class="btn btn-outline" id="viewMaintenanceHistory">
+                                <i class="fas fa-history"></i> View History
+                            </button>
+                        </div>
+                        <div class="maintenance-upcoming">
+                            <h5>Upcoming Maintenance</h5>
+                            <div id="upcomingMaintenance"></div>
+                        </div>
+                        <div class="maintenance-history">
+                            <h5>Maintenance History</h5>
+                            <div id="maintenanceHistory"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-content" id="tripsTab">
+                        <div class="trips-header">
+                            <h5>Recent Trips</h5>
+                            <button class="btn btn-sm btn-outline" id="viewAllTrips">
+                                View All Trips
+                            </button>
+                        </div>
+                        <div class="trips-list" id="truckTripsList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Driver Modal -->
+    <div class="modal" id="assignDriverModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Assign Driver to Truck</h3>
+                <button class="modal-close" onclick="closeModal('#assignDriverModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="assignDriverForm">
+                    <div class="form-group">
+                        <label>Select Driver *</label>
+                        <select id="driverSelect" required>
+                            <option value="">Select a driver</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Driver Information</label>
+                        <div id="selectedDriverInfo" class="driver-info-preview">
+                            <p class="text-muted">Select a driver to see details</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Assignment Notes</label>
+                        <textarea id="assignmentNotes" rows="3" placeholder="Any notes about this assignment..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('#assignDriverModal')">Cancel</button>
+                <button class="btn btn-primary" id="saveAssignmentBtn">Assign Driver</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Status Modal -->
+    <div class="modal" id="truckStatusModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Update Truck Status</h3>
+                <button class="modal-close" onclick="closeModal('#truckStatusModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="truckStatusForm">
+                    <div class="form-group">
+                        <label>New Status *</label>
+                        <select id="truckStatusSelect" required>
+                            <option value="available">Available</option>
+                            <option value="on-trip">On Trip</option>
+                            <option value="maintenance">Under Maintenance</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="repair">Needs Repair</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="estimatedRepairGroup" style="display: none;">
+                        <label>Estimated Repair Time (days)</label>
+                        <input type="number" id="estimatedRepairTime" min="1" max="30" placeholder="e.g., 3">
+                    </div>
+                    <div class="form-group">
+                        <label>Status Notes</label>
+                        <textarea id="truckStatusNotes" rows="3" placeholder="Reason for status change..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('#truckStatusModal')">Cancel</button>
+                <button class="btn btn-primary" id="saveTruckStatusBtn">Update Status</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Maintenance Modal -->
+    <div class="modal" id="maintenanceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Schedule Maintenance</h3>
+                <button class="modal-close" onclick="closeModal('#maintenanceModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="maintenanceForm">
+                    <div class="form-group">
+                        <label>Maintenance Type *</label>
+                        <select id="maintenanceType" required>
+                            <option value="">Select Type</option>
+                            <option value="routine">Routine Service</option>
+                            <option value="oil_change">Oil Change</option>
+                            <option value="brake_service">Brake Service</option>
+                            <option value="tire_replacement">Tire Replacement</option>
+                            <option value="engine_repair">Engine Repair</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Maintenance Date *</label>
+                        <input type="date" id="maintenanceDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea id="maintenanceDescription" rows="3" required placeholder="Describe the maintenance required..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Service Provider</label>
+                        <input type="text" id="serviceProvider" placeholder="e.g., Auto Service Center">
+                    </div>
+                    <div class="form-group">
+                        <label>Estimated Cost</label>
+                        <input type="number" id="estimatedCost" min="0" step="0.01" placeholder="e.g., 250.00">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('#maintenanceModal')">Cancel</button>
+                <button class="btn btn-primary" id="saveMaintenanceBtn">Schedule Maintenance</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
+        <div class="container-fluid">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>&copy; 2024 MizigoSmart Admin Panel. Version 1.0.0</p>
+                </div>
+                <div class="footer-right">
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Support</a>
+                        <a href="#">Documentation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/trucks.js"></script>
+</body>
+</html>

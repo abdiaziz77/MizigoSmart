@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MizigoSmart Admin</title>
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-layout">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-brand">
+                <i class="fas fa-shipping-fast"></i>
+                <span>MizigoSmart</span>
+                <small>Admin</small>
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-profile">
+            <div class="profile-image">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="profile-info">
+                <h4 id="adminName">Admin User</h4>
+                <span class="profile-role">Administrator</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="dashboard.html" class="sidebar-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="bookings.html" class="sidebar-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Bookings</span>
+                        <span class="badge badge-primary" id="bookingBadge">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trips.html" class="sidebar-link">
+                        <i class="fas fa-route"></i>
+                        <span>Trips</span>
+                        <span class="badge badge-warning" id="tripBadge">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trucks.html" class="sidebar-link">
+                        <i class="fas fa-truck"></i>
+                        <span>Trucks</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="drivers.html" class="sidebar-link">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Drivers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="users.html" class="sidebar-link">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="analytics.html" class="sidebar-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+            
+            </ul>
+        </nav>
+        
+       
+    </aside>
+
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <div class="navbar-left">
+            <button class="navbar-toggle" id="navbarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="navbar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+        </div>
+        
+        <div class="navbar-right">
+            <div class="navbar-notifications">
+                <button class="notification-btn" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h4>Notifications</h4>
+                        <button class="mark-read">Mark all as read</button>
+                    </div>
+                    <div class="notification-list">
+                        <div class="notification-item unread">
+                            <i class="fas fa-shipping-fast"></i>
+                            <div>
+                                <p>New booking received from John Doe</p>
+                                <span>2 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item unread">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <p>Truck #TRK-001 needs maintenance</p>
+                                <span>1 hour ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <i class="fas fa-user-plus"></i>
+                            <div>
+                                <p>New driver registered</p>
+                                <span>3 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navbar-user">
+                <div class="user-dropdown" id="userDropdown">
+                    <button class="user-btn">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <span id="userName">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i> My Profile
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" id="adminLogoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-left">
+                    <h1>Dashboard</h1>
+                    <p class="page-subtitle">Welcome back, <span id="greetingName">Admin</span>!</p>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="quickBooking">
+                            <i class="fas fa-plus"></i> Quick Booking
+                        </button>
+                        <button class="btn btn-outline" id="refreshDashboard">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="revenueAmount">$12,450</h3>
+                        <p>Total Revenue</p>
+                        <span class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> 12.5% from last month
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon bookings">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalBookings">156</h3>
+                        <p>Total Bookings</p>
+                        <span class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> 8.2% from last month
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon trucks">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="activeTrucks">24</h3>
+                        <p>Active Trucks</p>
+                        <span class="stat-change neutral">
+                            <i class="fas fa-minus"></i> No change
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon drivers">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="availableDrivers">18</h3>
+                        <p>Available Drivers</p>
+                        <span class="stat-change negative">
+                            <i class="fas fa-arrow-down"></i> 2 from last week
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Graphs -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Revenue Overview</h3>
+                        <select class="chart-period">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option selected>Last 90 days</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Booking Status</h3>
+                        <select class="chart-period">
+                            <option>Today</option>
+                            <option selected>This Week</option>
+                            <option>This Month</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="bookingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity & Tables -->
+            <div class="content-grid">
+                <!-- Recent Bookings -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Recent Bookings</h3>
+                        <a href="bookings.html" class="view-all">View All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Customer</th>
+                                    <th>Pickup</th>
+                                    <th>Destination</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentBookingsTable">
+                                <!-- Dynamic content will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Active Trips -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Active Trips</h3>
+                        <a href="trips.html" class="view-all">View All</a>
+                    </div>
+                    <div class="trip-list">
+                        <div class="trip-item">
+                            <div class="trip-info">
+                                <h4>Trip #TRP-001</h4>
+                                <p>New York → Chicago</p>
+                                <span class="trip-status ongoing">In Transit</span>
+                            </div>
+                            <div class="trip-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <span>65% Complete</span>
+                            </div>
+                        </div>
+                        <div class="trip-item">
+                            <div class="trip-info">
+                                <h4>Trip #TRP-002</h4>
+                                <p>Los Angeles → Seattle</p>
+                                <span class="trip-status delayed">Delayed</span>
+                            </div>
+                            <div class="trip-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 40%"></div>
+                                </div>
+                                <span>40% Complete</span>
+                            </div>
+                        </div>
+                        <div class="trip-item">
+                            <div class="trip-info">
+                                <h4>Trip #TRP-003</h4>
+                                <p>Miami → Atlanta</p>
+                                <span class="trip-status ontime">On Time</span>
+                            </div>
+                            <div class="trip-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%"></div>
+                                </div>
+                                <span>85% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>System Status</h3>
+                    </div>
+                    <div class="system-status">
+                        <div class="status-item">
+                            <div class="status-info">
+                                <h4>API Server</h4>
+                                <p>json-server:3000</p>
+                            </div>
+                            <span class="status-indicator active"></span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-info">
+                                <h4>Database</h4>
+                                <p>Local Storage</p>
+                            </div>
+                            <span class="status-indicator active"></span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-info">
+                                <h4>Email Service</h4>
+                                <p>SMTP Server</p>
+                            </div>
+                            <span class="status-indicator warning"></span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-info">
+                                <h4>Tracking System</h4>
+                                <p>GPS Integration</p>
+                            </div>
+                            <span class="status-indicator active"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="action-btn" data-action="add-booking">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Add New Booking</span>
+                        </button>
+                        <button class="action-btn" data-action="add-driver">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Add Driver</span>
+                        </button>
+                        <button class="action-btn" data-action="add-truck">
+                            <i class="fas fa-truck-loading"></i>
+                            <span>Add Truck</span>
+                        </button>
+                        <button class="action-btn" data-action="generate-report">
+                            <i class="fas fa-file-export"></i>
+                            <span>Generate Report</span>
+                        </button>
+                        <button class="action-btn" data-action="send-notification">
+                            <i class="fas fa-bullhorn"></i>
+                            <span>Send Notification</span>
+                        </button>
+                        <button class="action-btn" data-action="backup-data">
+                            <i class="fas fa-database"></i>
+                            <span>Backup Data</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Timeline -->
+            <div class="content-card full-width">
+                <div class="card-header">
+                    <h3>Recent Activity</h3>
+                </div>
+                <div class="activity-timeline" id="activityTimeline">
+                    <!-- Activity items will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
+        <div class="container-fluid">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>&copy; 2024 MizigoSmart Admin Panel. Version 1.0.0</p>
+                </div>
+                <div class="footer-right">
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Support</a>
+                        <a href="#">Documentation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Quick Booking Modal -->
+    <div class="modal" id="quickBookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Quick Booking</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="quickBookingForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Customer Name</label>
+                            <input type="text" placeholder="Enter customer name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" placeholder="Enter phone number" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Pickup Location</label>
+                        <input type="text" placeholder="Enter pickup address" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Location</label>
+                        <input type="text" placeholder="Enter delivery address" required>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Package Type</label>
+                            <select required>
+                                <option value="">Select type</option>
+                                <option value="document">Document</option>
+                                <option value="parcel">Parcel</option>
+                                <option value="freight">Freight</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Weight (kg)</label>
+                            <input type="number" placeholder="0" min="0" required>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn btn-primary">Create Booking</button>
+                        <button type="button" class="btn btn-outline" id="cancelQuickBooking">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/admin.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

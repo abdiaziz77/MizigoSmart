@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trips Management - MizigoSmart Admin</title>
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/trips.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body class="admin-layout">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-brand">
+                <i class="fas fa-shipping-fast"></i>
+                <span>MizigoSmart</span>
+                <small>Admin</small>
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-profile">
+            <div class="profile-image">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="profile-info">
+                <h4 id="adminName">Admin User</h4>
+                <span class="profile-role">Administrator</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="bookings.html" class="sidebar-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Bookings</span>
+                        <span class="badge badge-primary" id="bookingBadge">156</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trips.html" class="sidebar-link active">
+                        <i class="fas fa-route"></i>
+                        <span>Trips</span>
+                        <span class="badge badge-warning" id="tripBadge">3</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trucks.html" class="sidebar-link">
+                        <i class="fas fa-truck"></i>
+                        <span>Trucks</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="drivers.html" class="sidebar-link">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Drivers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="users.html" class="sidebar-link">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="analytics.html" class="sidebar-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+           
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <div class="navbar-left">
+            <button class="navbar-toggle" id="navbarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="navbar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="globalSearch" placeholder="Search trips...">
+            </div>
+        </div>
+        
+        <div class="navbar-right">
+            <div class="navbar-notifications">
+                <button class="notification-btn" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h4>Notifications</h4>
+                        <button class="mark-read">Mark all as read</button>
+                    </div>
+                    <div class="notification-list">
+                        <div class="notification-item unread">
+                            <i class="fas fa-route"></i>
+                            <div>
+                                <p>Trip #TRP-001 delayed by 2 hours</p>
+                                <span>30 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item unread">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <p>Truck #TRK-005 needs maintenance</p>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <p>Trip #TRP-003 completed successfully</p>
+                                <span>5 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navbar-user">
+                <div class="user-dropdown" id="userDropdown">
+                    <button class="user-btn">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <span id="userName">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i> My Profile
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" id="adminLogoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-left">
+                    <h1>Trip Management</h1>
+                    <p class="page-subtitle">Monitor and manage all active and scheduled trips</p>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="createTripBtn">
+                            <i class="fas fa-plus"></i> Create New Trip
+                        </button>
+                        <button class="btn btn-outline" id="exportTrips">
+                            <i class="fas fa-file-export"></i> Export
+                        </button>
+                        <button class="btn btn-outline" id="refreshTrips">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trips Overview -->
+            <div class="trips-overview">
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Active Trips</h3>
+                        <i class="fas fa-truck-moving"></i>
+                    </div>
+                    <div class="stat-value" id="activeTripsCount">12</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 3 today
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Scheduled</h3>
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-value" id="scheduledTrips">18</div>
+                    <div class="stat-change negative">
+                        <i class="fas fa-arrow-down"></i> 2 from yesterday
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Completed</h3>
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value" id="completedTrips">342</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 15 this week
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Delayed</h3>
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value" id="delayedTrips">3</div>
+                    <div class="stat-change warning">
+                        <i class="fas fa-exclamation-triangle"></i> 1 new delay
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Tracking Section -->
+            <div class="live-tracking-card">
+                <div class="card-header">
+                    <h3>Live Trip Tracking</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-outline" id="refreshLiveTracking">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-sm btn-primary" id="showAllTrips">
+                            <i class="fas fa-eye"></i> Show All
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="mapContainer" class="map-container">
+                        <div id="liveTrackingMap"></div>
+                        <div class="map-controls">
+                            <button class="map-control-btn" id="zoomIn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="map-control-btn" id="zoomOut">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button class="map-control-btn" id="centerMap">
+                                <i class="fas fa-crosshairs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="live-trips-list">
+                        <h4>Active Trips</h4>
+                        <div class="trips-scroll-list" id="activeTripsList">
+                            <!-- Active trips will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trips Table -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>All Trips</h3>
+                    <div class="table-actions">
+                        <div class="table-info" id="tableInfo">
+                            Showing 1-10 of 372 trips
+                        </div>
+                        <div class="table-controls">
+                            <button class="btn btn-sm btn-outline" id="bulkActionsBtn">
+                                <i class="fas fa-cog"></i> Bulk Actions
+                            </button>
+                            <select id="itemsPerPage" class="items-per-page">
+                                <option value="10">10 per page</option>
+                                <option value="25">25 per page</option>
+                                <option value="50">50 per page</option>
+                                <option value="100">100 per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="data-table" id="tripsTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="selectAll">
+                                </th>
+                                <th>Trip ID</th>
+                                <th>Booking ID</th>
+                                <th>Truck</th>
+                                <th>Driver</th>
+                                <th>Route</th>
+                                <th>Start Time</th>
+                                <th>ETA</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tripsTableBody">
+                            <!-- Trips will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-footer">
+                    <div class="pagination-info" id="paginationInfo">
+                        Page 1 of 38
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pagination-btn" id="firstPage" disabled>
+                            <i class="fas fa-angle-double-left"></i>
+                        </button>
+                        <button class="pagination-btn" id="prevPage" disabled>
+                            <i class="fas fa-angle-left"></i>
+                        </button>
+                        <div class="page-numbers" id="pageNumbers">
+                            <button class="page-number active">1</button>
+                            <button class="page-number">2</button>
+                            <button class="page-number">3</button>
+                            <span>...</span>
+                            <button class="page-number">38</button>
+                        </div>
+                        <button class="pagination-btn" id="nextPage">
+                            <i class="fas fa-angle-right"></i>
+                        </button>
+                        <button class="pagination-btn" id="lastPage">
+                            <i class="fas fa-angle-double-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trip Details Modal -->
+            <div class="modal" id="tripDetailsModal">
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <h3>Trip Details</h3>
+                        <button class="modal-close" onclick="closeModal('#tripDetailsModal')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="trip-details">
+                            <div class="details-header">
+                                <div class="trip-id">
+                                    <h4 id="detailTripId">TRP-001</h4>
+                                    <span class="trip-status" id="detailTripStatus">In Progress</span>
+                                </div>
+                                <div class="trip-duration">
+                                    <h3 id="detailTripDuration">4h 30m</h3>
+                                    <span>Time Elapsed</span>
+                                </div>
+                            </div>
+                            
+                            <div class="details-grid">
+                                <div class="details-section">
+                                    <h4>Route Information</h4>
+                                    <div class="route-visualization">
+                                        <div class="route-point start">
+                                            <div class="point-icon">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </div>
+                                            <div class="point-info">
+                                                <h5>Pickup Location</h5>
+                                                <p id="detailPickupLocation">123 Main Street, New York, NY 10001</p>
+                                                <span id="detailPickupTime">Today, 09:00 AM</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-line">
+                                            <div class="route-progress">
+                                                <div class="progress-bar" style="width: 65%"></div>
+                                            </div>
+                                            <div class="current-location" id="currentLocation">
+                                                <i class="fas fa-truck"></i>
+                                                <span>65% Complete</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-point end">
+                                            <div class="point-icon">
+                                                <i class="fas fa-flag-checkered"></i>
+                                            </div>
+                                            <div class="point-info">
+                                                <h5>Delivery Location</h5>
+                                                <p id="detailDeliveryLocation">456 Oak Avenue, Chicago, IL 60601</p>
+                                                <span id="detailDeliveryTime">Today, 02:30 PM (ETA)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="details-section">
+                                    <h4>Truck & Driver Details</h4>
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <label>Truck Number</label>
+                                            <p id="detailTruckNumber">TRK-001</p>
+                                        </div>
+                                        <div class="info-item">
+                                            <label>Truck Type</label>
+                                            <p id="detailTruckType">Box Truck</p>
+                                        </div>
+                                        <div class="info-item">
+                                            <label>Driver</label>
+                                            <p id="detailDriverName">Michael Johnson</p>
+                                        </div>
+                                        <div class="info-item">
+                                            <label>Driver Phone</label>
+                                            <p id="detailDriverPhone">+1 (555) 456-7890</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="details-section">
+                                    <h4>Booking Information</h4>
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <label>Booking ID</label>
+                                            <p id="detailBookingId">BK-001</p>
+                                        </div>
+                                        <div class="info-item">
+                                            <label>Customer</label>
+                                            <p id="detailCustomerName">John Doe</p>
+                                        </div>
+                                        <div class="info-item">
+                                            <label>Package Type</label>
+                                            <p id="detailPackageType">Furniture</p>
+                                        </div>
+                                        <div class="info-item">
+                                            <label>Package Weight</label>
+                                            <p id="detailPackageWeight">250 kg</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="details-section">
+                                    <h4>Trip Metrics</h4>
+                                    <div class="metrics-grid">
+                                        <div class="metric-item">
+                                            <div class="metric-value" id="detailDistance">350</div>
+                                            <div class="metric-label">Distance (km)</div>
+                                        </div>
+                                        <div class="metric-item">
+                                            <div class="metric-value" id="detailFuelUsed">45</div>
+                                            <div class="metric-label">Fuel Used (L)</div>
+                                        </div>
+                                        <div class="metric-item">
+                                            <div class="metric-value" id="detailAvgSpeed">75</div>
+                                            <div class="metric-label">Avg Speed (km/h)</div>
+                                        </div>
+                                        <div class="metric-item">
+                                            <div class="metric-value" id="detailStops">2</div>
+                                            <div class="metric-label">Stops</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="details-section">
+                                    <h4>Real-time Updates</h4>
+                                    <div class="updates-timeline" id="tripUpdates">
+                                        <!-- Trip updates will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="trackLiveBtn">
+                            <i class="fas fa-map-marker-alt"></i> Live Tracking
+                        </button>
+                        <button class="btn btn-outline" id="sendUpdateBtn">
+                            <i class="fas fa-comment"></i> Send Update
+                        </button>
+                        <button class="btn btn-outline" id="updateStatusBtn">
+                            <i class="fas fa-sync-alt"></i> Update Status
+                        </button>
+                        <button class="btn btn-danger" id="cancelTripBtn">
+                            <i class="fas fa-times"></i> Cancel Trip
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Trip Modal -->
+            <div class="modal" id="createTripModal">
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <h3>Create New Trip</h3>
+                        <button class="modal-close" onclick="closeModal('#createTripModal')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="tripForm">
+                            <div class="form-tabs">
+                                <button type="button" class="form-tab active" data-tab="booking">Booking</button>
+                                <button type="button" class="form-tab" data-tab="assign">Assign Resources</button>
+                                <button type="button" class="form-tab" data-tab="route">Route Planning</button>
+                                <button type="button" class="form-tab" data-tab="schedule">Schedule</button>
+                            </div>
+                            
+                            <div class="tab-content active" id="bookingTab">
+                                <div class="form-group">
+                                    <label>Select Booking *</label>
+                                    <select id="bookingSelect" class="form-select" required>
+                                        <option value="">Choose a booking...</option>
+                                        <option value="BK-001">BK-001 - John Doe (New York to Chicago)</option>
+                                        <option value="BK-002">BK-002 - Sarah Smith (Boston to Philadelphia)</option>
+                                        <option value="BK-003">BK-003 - Mike Johnson (Miami to Atlanta)</option>
+                                    </select>
+                                </div>
+                                <div class="booking-preview" id="bookingPreview">
+                                    <!-- Booking preview will be loaded here -->
+                                </div>
+                            </div>
+                            
+                            <div class="tab-content" id="assignTab">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Select Truck *</label>
+                                        <select id="truckSelect" class="form-select" required>
+                                            <option value="">Choose a truck...</option>
+                                            <option value="TRK-001">TRK-001 - Box Truck (Available)</option>
+                                            <option value="TRK-002">TRK-002 - Flatbed Truck (In Service)</option>
+                                            <option value="TRK-003">TRK-003 - Refrigerated Truck (Available)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Select Driver *</label>
+                                        <select id="driverSelect" class="form-select" required>
+                                            <option value="">Choose a driver...</option>
+                                            <option value="DRV-001">DRV-001 - Michael Johnson (Available)</option>
+                                            <option value="DRV-002">DRV-002 - Robert Brown (On Trip)</option>
+                                            <option value="DRV-003">DRV-003 - James Wilson (Available)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="resource-availability" id="resourceAvailability">
+                                    <!-- Availability info will be loaded here -->
+                                </div>
+                            </div>
+                            
+                            <div class="tab-content" id="routeTab">
+                                <div class="form-group">
+                                    <label>Route Map</label>
+                                    <div id="routeMap" class="route-map-preview"></div>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Distance (km)</label>
+                                        <input type="number" id="tripDistance" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Estimated Duration</label>
+                                        <input type="text" id="tripDuration" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Route Notes</label>
+                                    <textarea id="routeNotes" rows="3" placeholder="Any special route instructions..."></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-content" id="scheduleTab">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Start Date *</label>
+                                        <input type="date" id="tripStartDate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Start Time *</label>
+                                        <input type="time" id="tripStartTime" required>
+                                    </div>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Estimated Arrival Date *</label>
+                                        <input type="date" id="tripArrivalDate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Estimated Arrival Time *</label>
+                                        <input type="time" id="tripArrivalTime" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Trip Priority</label>
+                                    <select id="tripPriority" class="form-select">
+                                        <option value="low">Low Priority</option>
+                                        <option value="normal" selected>Normal Priority</option>
+                                        <option value="high">High Priority</option>
+                                        <option value="urgent">Urgent Priority</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" id="prevTabBtn">
+                                    <i class="fas fa-arrow-left"></i> Previous
+                                </button>
+                                <button type="button" class="btn btn-primary" id="nextTabBtn">
+                                    Next <i class="fas fa-arrow-right"></i>
+                                </button>
+                                <button type="submit" class="btn btn-success" id="submitTripBtn" style="display: none;">
+                                    <i class="fas fa-check"></i> Create Trip
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trip Status Update Modal -->
+            <div class="modal" id="tripStatusModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Update Trip Status</h3>
+                        <button class="modal-close" onclick="closeModal('#tripStatusModal')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Select Status *</label>
+                            <select id="tripStatusSelect" class="form-select" required>
+                                <option value="">Choose status...</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="loading">Loading</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="delayed">Delayed</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Reason/Notes</label>
+                            <textarea id="tripStatusNotes" rows="3" placeholder="Enter reason or additional notes..."></textarea>
+                        </div>
+                        <div class="form-group" id="delayReasonGroup" style="display: none;">
+                            <label>Delay Reason</label>
+                            <select id="delayReason" class="form-select">
+                                <option value="">Select reason...</option>
+                                <option value="traffic">Traffic Congestion</option>
+                                <option value="weather">Bad Weather</option>
+                                <option value="mechanical">Mechanical Issue</option>
+                                <option value="driver">Driver Issue</option>
+                                <option value="loading">Loading Delay</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="estimatedDelayGroup" style="display: none;">
+                            <label>Estimated Delay (hours)</label>
+                            <input type="number" id="estimatedDelay" min="0" step="0.5" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="saveTripStatusBtn">Update Status</button>
+                        <button class="btn btn-outline" id="cancelTripStatusBtn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Tracking Modal -->
+            <div class="modal" id="liveTrackingModal">
+                <div class="modal-content modal-xl">
+                    <div class="modal-header">
+                        <h3>Live Trip Tracking - <span id="liveTripId">TRP-001</span></h3>
+                        <button class="modal-close" onclick="closeModal('#liveTrackingModal')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="live-tracking-container">
+                            <div class="live-map-container">
+                                <div id="fullScreenMap"></div>
+                                <div class="live-map-controls">
+                                    <button class="btn btn-sm btn-outline" id="refreshLiveMap">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline" id="fullScreenBtn">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="live-info-panel">
+                                <div class="live-trip-info">
+                                    <h4>Trip Information</h4>
+                                    <div class="info-item">
+                                        <label>Current Speed</label>
+                                        <p id="currentSpeed">75 km/h</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Distance Covered</label>
+                                        <p id="distanceCovered">225 km</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Distance Remaining</label>
+                                        <p id="distanceRemaining">125 km</p>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Estimated Arrival</label>
+                                        <p id="liveEta">02:30 PM</p>
+                                    </div>
+                                </div>
+                                <div class="live-driver-info">
+                                    <h4>Driver Information</h4>
+                                    <div class="driver-details">
+                                        <div class="driver-avatar">
+                                            <i class="fas fa-user-circle"></i>
+                                        </div>
+                                        <div class="driver-info">
+                                            <h5 id="liveDriverName">Michael Johnson</h5>
+                                            <p id="liveDriverPhone">+1 (555) 456-7890</p>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline" id="callDriverBtn">
+                                        <i class="fas fa-phone"></i> Call Driver
+                                    </button>
+                                </div>
+                                <div class="live-updates">
+                                    <h4>Recent Updates</h4>
+                                    <div class="updates-list" id="liveUpdatesList">
+                                        <!-- Live updates will be loaded here -->
+                                    </div>
+                                    <div class="send-update-form">
+                                        <input type="text" placeholder="Send message to driver..." id="driverMessage">
+                                        <button class="btn btn-sm btn-primary" id="sendMessageBtn">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
+        <div class="container-fluid">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>&copy; 2024 MizigoSmart Admin Panel. Version 1.0.0</p>
+                </div>
+                <div class="footer-right">
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Support</a>
+                        <a href="#">Documentation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/trips.js"></script>
+</body>
+</html>

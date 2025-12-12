@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Shipment - MizigoSmart</title>
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/track.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-shipping-fast"></i>
+                MizigoSmart
+            </a>
+            
+            <button class="navbar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="navbar-menu">
+                <li class="navbar-item">
+                    <a href="index.html" class="navbar-link">Home</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="about.html" class="navbar-link">About</a></li>
+                <li class="navbar-item">
+                    <a href="services.html" class="navbar-link">Services</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="contact.html" class="navbar-link">Contact</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="booking.html" class="navbar-link">Book Now</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="track.html" class="navbar-link active">Track Shipment</a>
+                </li>
+            </ul>
+            
+            <div class="navbar-actions">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="register.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="track-header">
+        <div class="container">
+            <div class="header-content">
+                <h1>Track Your Shipment</h1>
+                <p>Real-time tracking and updates for your shipments</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Tracking Search Section -->
+        <section class="track-search-section">
+            <div class="container">
+                <div class="search-container">
+                    <div class="search-card">
+                        <h2><i class="fas fa-search"></i> Track by Tracking Number</h2>
+                        <p class="search-subtitle">Enter your tracking number to get real-time updates</p>
+                        
+                        <div class="search-form">
+                            <div class="search-input-group">
+                                <input 
+                                    type="text" 
+                                    id="trackingNumber" 
+                                    class="search-input" 
+                                    placeholder="Enter tracking number (e.g., MZG123456789)"
+                                    maxlength="20"
+                                >
+                                <button id="trackBtn" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Track Shipment
+                                </button>
+                            </div>
+                            <div class="search-options">
+                                <p class="option-title">Or track using:</p>
+                                <div class="option-buttons">
+                                    <button class="option-btn" data-option="recent">
+                                        <i class="fas fa-history"></i> Recent Shipments
+                                    </button>
+                                    <button class="option-btn" data-option="reference">
+                                        <i class="fas fa-hashtag"></i> Order Reference
+                                    </button>
+                                    <button class="option-btn" data-option="phone">
+                                        <i class="fas fa-phone"></i> Phone Number
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="search-examples">
+                            <p><strong>Example tracking numbers:</strong></p>
+                            <div class="example-numbers">
+                                <span class="example-number" data-number="MZG123456789">MZG123456789</span>
+                                <span class="example-number" data-number="MZG987654321">MZG987654321</span>
+                                <span class="example-number" data-number="MZG456789123">MZG456789123</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="help-card">
+                        <h3><i class="fas fa-question-circle"></i> Need Help?</h3>
+                        <ul class="help-list">
+                            <li>
+                                <i class="fas fa-info-circle"></i>
+                                <div>
+                                    <h4>Where to find tracking number?</h4>
+                                    <p>Check your booking confirmation email or invoice</p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <h4>Tracking not updating?</h4>
+                                    <p>Allow 24 hours for tracking to appear after booking</p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <h4>Still need help?</h4>
+                                    <p>Call our support: +1 (555) 123-4567</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tracking Results Section (Hidden by default) -->
+        <section class="track-results-section" id="trackResults" style="display: none;">
+            <div class="container">
+                <!-- Tracking Header -->
+                <div class="tracking-header">
+                    <div class="tracking-info">
+                        <h2 id="trackingResultTitle">Tracking Results</h2>
+                        <div class="tracking-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-barcode"></i>
+                                <div>
+                                    <span class="meta-label">Tracking Number</span>
+                                    <span class="meta-value" id="displayTrackingNumber">-</span>
+                                </div>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-box"></i>
+                                <div>
+                                    <span class="meta-label">Status</span>
+                                    <span class="meta-value"><span class="status-badge" id="shipmentStatus">-</span></span>
+                                </div>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <div>
+                                    <span class="meta-label">Estimated Delivery</span>
+                                    <span class="meta-value" id="estimatedDelivery">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tracking-actions">
+                        <button class="btn btn-outline" id="printTracking">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                        <button class="btn btn-outline" id="shareTracking">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                        <button class="btn btn-primary" id="newTracking">
+                            <i class="fas fa-search"></i> Track Another
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tracking-content">
+                    <!-- Left Column: Tracking Timeline -->
+                    <div class="tracking-timeline">
+                        <h3><i class="fas fa-map-marked-alt"></i> Shipment Timeline</h3>
+                        <div class="timeline-container" id="timelineContainer">
+                            <!-- Timeline will be populated by JavaScript -->
+                        </div>
+                        
+                        <!-- Shipment Details -->
+                        <div class="shipment-details">
+                            <h4><i class="fas fa-info-circle"></i> Shipment Details</h4>
+                            <div class="details-grid" id="shipmentDetails">
+                                <!-- Details will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Map & Info -->
+                    <div class="tracking-sidebar">
+                        <!-- Live Map -->
+                        <div class="map-card">
+                            <h3><i class="fas fa-map"></i> Live Location</h3>
+                            <div class="map-container" id="mapContainer">
+                                <div class="map-placeholder">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    <p>Live tracking map will appear here</p>
+                                </div>
+                                <!-- Map will be initialized by JavaScript -->
+                            </div>
+                            <div class="map-info">
+                                <div class="map-info-item">
+                                    <i class="fas fa-truck"></i>
+                                    <div>
+                                        <span class="info-label">Current Location</span>
+                                        <span class="info-value" id="currentLocation">-</span>
+                                    </div>
+                                </div>
+                                <div class="map-info-item">
+                                    <i class="fas fa-road"></i>
+                                    <div>
+                                        <span class="info-label">Distance Covered</span>
+                                        <span class="info-value" id="distanceCovered">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Information -->
+                        <div class="delivery-card">
+                            <h3><i class="fas fa-truck"></i> Delivery Information</h3>
+                            <div class="delivery-info">
+                                <div class="delivery-item">
+                                    <i class="fas fa-user"></i>
+                                    <div>
+                                        <span class="delivery-label">Recipient</span>
+                                        <span class="delivery-value" id="deliveryRecipient">-</span>
+                                    </div>
+                                </div>
+                                <div class="delivery-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <span class="delivery-label">Delivery Address</span>
+                                        <span class="delivery-value" id="deliveryAddress">-</span>
+                                    </div>
+                                </div>
+                                <div class="delivery-item">
+                                    <i class="fas fa-phone"></i>
+                                    <div>
+                                        <span class="delivery-label">Contact</span>
+                                        <span class="delivery-value" id="deliveryContact">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="actions-card">
+                            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                            <div class="action-buttons">
+                                <button class="action-btn" id="updateDelivery">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Update Delivery</span>
+                                </button>
+                                <button class="action-btn" id="requestHold">
+                                    <i class="fas fa-pause"></i>
+                                    <span>Request Hold</span>
+                                </button>
+                                <button class="action-btn" id="contactDriver">
+                                    <i class="fas fa-phone"></i>
+                                    <span>Contact Driver</span>
+                                </button>
+                                <button class="action-btn" id="reportIssue">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>Report Issue</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Shipments Section -->
+        <section class="recent-shipments-section" id="recentShipments">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> Recent Shipments</h2>
+                    <p>Your recently tracked shipments</p>
+                </div>
+                
+                <div class="shipments-container" id="recentShipmentsContainer">
+                    <!-- Recent shipments will be populated by JavaScript -->
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>No Recent Shipments</h3>
+                        <p>Track a shipment to see it here</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tracking FAQ -->
+        <section class="track-faq-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-question-circle"></i> Tracking FAQ</h2>
+                    <p>Common questions about shipment tracking</p>
+                </div>
+                
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>How often is tracking updated?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Tracking is updated in real-time. Our system receives updates every 15-30 minutes when the shipment is in transit, and immediately when there are status changes.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>What do the different statuses mean?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Pending:</strong> Shipment booked but not yet picked up.<br>
+                            <strong>In Transit:</strong> Shipment is on the way to destination.<br>
+                            <strong>Out for Delivery:</strong> Final delivery in progress.<br>
+                            <strong>Delivered:</strong> Shipment successfully delivered.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Why is my tracking not updating?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>If tracking isn't updating, it could be due to: network connectivity issues in transit areas, delays in scanning at facilities, or the shipment may be awaiting the next scheduled scan.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Can I change delivery instructions?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, you can update delivery instructions up to 2 hours before the scheduled delivery time using the "Update Delivery" option in the tracking results.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="track-cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Need Help With Your Shipment?</h2>
+                    <p>Our customer support team is available 24/7 to assist you with any tracking or delivery questions.</p>
+                    <div class="cta-buttons">
+                        <a href="contact.html" class="btn btn-primary btn-lg">
+                            <i class="fas fa-headset"></i> Contact Support
+                        </a>
+                        <a href="booking.html" class="btn btn-outline btn-lg">
+                            <i class="fas fa-shipping-fast"></i> Book New Shipment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="footer-brand">
+                        <i class="fas fa-shipping-fast"></i>
+                        MizigoSmart
+                    </a>
+                    <p class="footer-description">Revolutionizing logistics with smart technology and efficient solutions for modern businesses.</p>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="services.html#freight">Freight Shipping</a></li>
+                        <li><a href="services.html#warehouse">Warehouse Storage</a></li>
+                        <li><a href="services.html#scm">Supply Chain</a></li>
+                        <li><a href="services.html#lastmile">Last Mile Delivery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact Info</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Logistics St, Business City</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@mizigosmart.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MizigoSmart. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/tracking.js"></script>
+     <script src="assets/js/auth.js"></script>
+</body>
+</html>

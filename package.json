@@ -1,0 +1,12 @@
+{
+  "name": "mizigosmart",
+  "version": "1.0.0",
+  "description": "Logistics Management System",
+  "scripts": {
+    "start": "json-server --watch server/db.json --port 3000 --routes server/routes.json",
+    "dev": "json-server --watch server/db.json --port 3000 --routes server/routes.json --middlewares ./server/middleware.js"
+  },
+  "dependencies": {
+    "json-server": "^0.17.0"
+  }
+}

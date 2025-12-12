@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - MizigoSmart Admin</title>
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/analytics.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-layout">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-brand">
+                <i class="fas fa-shipping-fast"></i>
+                <span>MizigoSmart</span>
+                <small>Admin</small>
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-profile">
+            <div class="profile-image">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="profile-info">
+                <h4 id="adminName">Admin User</h4>
+                <span class="profile-role">Administrator</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="bookings.html" class="sidebar-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Bookings</span>
+                        <span class="badge badge-primary" id="bookingBadge">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trips.html" class="sidebar-link">
+                        <i class="fas fa-route"></i>
+                        <span>Trips</span>
+                        <span class="badge badge-warning" id="tripBadge">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trucks.html" class="sidebar-link">
+                        <i class="fas fa-truck"></i>
+                        <span>Trucks</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="drivers.html" class="sidebar-link">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Drivers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="users.html" class="sidebar-link">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="analytics.html" class="sidebar-link active">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+            
+            </ul>
+        </nav>
+        
+       
+    </aside>
+
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <div class="navbar-left">
+            <button class="navbar-toggle" id="navbarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="navbar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search analytics..." id="searchAnalytics">
+            </div>
+        </div>
+        
+        <div class="navbar-right">
+            <div class="navbar-notifications">
+                <button class="notification-btn" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h4>Notifications</h4>
+                        <button class="mark-read">Mark all as read</button>
+                    </div>
+                    <div class="notification-list">
+                        <!-- Notifications will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navbar-user">
+                <div class="user-dropdown" id="userDropdown">
+                    <button class="user-btn">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <span id="userName">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i> My Profile
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" id="adminLogoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-left">
+                    <h1>Analytics Dashboard</h1>
+                    <p class="page-subtitle">Advanced insights and performance metrics</p>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="btn btn-outline" id="refreshAnalytics">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" id="exportAnalytics">
+                            <i class="fas fa-download"></i> Export Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Filters -->
+            <div class="analytics-filters">
+                <div class="filter-group">
+                    <label>Date Range:</label>
+                    <select id="dateRange">
+                        <option value="7">Last 7 days</option>
+                        <option value="30" selected>Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                        <option value="365">Last 12 months</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                <div class="filter-group" id="customDateRange" style="display: none;">
+                    <label>From:</label>
+                    <input type="date" id="dateFrom">
+                    <label>To:</label>
+                    <input type="date" id="dateTo">
+                </div>
+                <div class="filter-group">
+                    <label>Metrics:</label>
+                    <select id="metricsSelect">
+                        <option value="all" selected>All Metrics</option>
+                        <option value="revenue">Revenue Only</option>
+                        <option value="bookings">Bookings Only</option>
+                        <option value="performance">Performance Only</option>
+                    </select>
+                </div>
+                <button class="btn btn-secondary" id="applyFilters">
+                    <i class="fas fa-filter"></i> Apply Filters
+                </button>
+            </div>
+
+            <!-- Key Performance Indicators -->
+            <div class="kpi-section">
+                <h3>Key Performance Indicators</h3>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h4>Total Revenue</h4>
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="kpi-value" id="kpiRevenue">$0</div>
+                        <div class="kpi-change" id="kpiRevenueChange">
+                            <span class="trend positive">+0%</span> vs previous period
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h4>Total Bookings</h4>
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="kpi-value" id="kpiBookings">0</div>
+                        <div class="kpi-change" id="kpiBookingsChange">
+                            <span class="trend positive">+0%</span> vs previous period
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h4>Average Booking Value</h4>
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="kpi-value" id="kpiAvgBooking">$0</div>
+                        <div class="kpi-change" id="kpiAvgBookingChange">
+                            <span class="trend positive">+0%</span> vs previous period
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h4>Customer Satisfaction</h4>
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <div class="kpi-value" id="kpiSatisfaction">0%</div>
+                        <div class="kpi-change" id="kpiSatisfactionChange">
+                            <span class="trend positive">+0%</span> vs previous period
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <div class="chart-row">
+                    <div class="chart-card large">
+                        <div class="chart-header">
+                            <h3>Revenue Trend</h3>
+                            <div class="chart-controls">
+                                <button class="chart-control-btn active" data-chart="revenue" data-type="line">Line</button>
+                                <button class="chart-control-btn" data-chart="revenue" data-type="bar">Bar</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueTrendChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Booking Sources</h3>
+                            <select class="chart-period">
+                                <option value="7">7 days</option>
+                                <option value="30" selected>30 days</option>
+                                <option value="90">90 days</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="bookingSourcesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Top Performing Routes</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="routesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Truck Utilization</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="utilizationChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Driver Performance</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="driverChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Analytics Tables -->
+            <div class="tables-section">
+                <div class="analytics-table-card">
+                    <div class="table-header">
+                        <h3>Revenue by Month</h3>
+                        <button class="btn btn-sm btn-outline" id="exportRevenue">Export</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="revenueTable">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Bookings</th>
+                                    <th>Revenue</th>
+                                    <th>Avg. Booking</th>
+                                    <th>Growth</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Revenue data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="analytics-table-card">
+                    <div class="table-header">
+                        <h3>Customer Analytics</h3>
+                        <button class="btn btn-sm btn-outline" id="exportCustomers">Export</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="customersTable">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Bookings</th>
+                                    <th>Total Spent</th>
+                                    <th>Last Booking</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Customer data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="analytics-table-card">
+                    <div class="table-header">
+                        <h3>Truck Performance</h3>
+                        <button class="btn btn-sm btn-outline" id="exportTrucks">Export</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="trucksTable">
+                            <thead>
+                                <tr>
+                                    <th>Truck ID</th>
+                                    <th>Total Trips</th>
+                                    <th>Utilization</th>
+                                    <th>Revenue</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Truck data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insights & Recommendations -->
+            <div class="insights-section">
+                <div class="insights-card">
+                    <div class="insights-header">
+                        <h3><i class="fas fa-lightbulb"></i> Business Insights</h3>
+                        <span class="last-updated">Last updated: <span id="lastUpdated">Just now</span></span>
+                    </div>
+                    <div class="insights-content">
+                        <div class="insight-item positive">
+                            <div class="insight-icon">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="insight-text">
+                                <h4>Revenue Growth</h4>
+                                <p>Revenue increased by 15% compared to last month. This growth is driven by increased bookings on the New York-Chicago route.</p>
+                            </div>
+                        </div>
+                        <div class="insight-item warning">
+                            <div class="insight-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="insight-text">
+                                <h4>Underutilized Assets</h4>
+                                <p>Truck #TRK-005 has only 40% utilization rate. Consider reassigning or optimizing its schedule.</p>
+                            </div>
+                        </div>
+                        <div class="insight-item info">
+                            <div class="insight-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="insight-text">
+                                <h4>Customer Retention</h4>
+                                <p>Repeat customer rate is at 65%. Implement a loyalty program to increase this to 75%.</p>
+                            </div>
+                        </div>
+                        <div class="insight-item recommendation">
+                            <div class="insight-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="insight-text">
+                                <h4>Opportunity Alert</h4>
+                                <p>Weekend bookings show 20% lower volume. Consider offering weekend discounts to boost sales.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
+        <div class="container-fluid">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>&copy; 2024 MizigoSmart Admin Panel. Analytics Dashboard v1.0</p>
+                </div>
+                <div class="footer-right">
+                    <div class="footer-links">
+                        <a href="#" id="helpLink"><i class="fas fa-question-circle"></i> Help</a>
+                        <a href="#" id="feedbackLink"><i class="fas fa-comment-alt"></i> Feedback</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/admin.js"></script>
+    <script src="assets/js/analytics.js"></script>
+</body>
+</html>

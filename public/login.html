@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MizigoSmart</title>
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-shipping-fast"></i>
+                MizigoSmart
+            </a>
+            
+            <button class="navbar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="navbar-menu">
+                <li class="navbar-item">
+                    <a href="index.html" class="navbar-link">Home</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="about.html" class="navbar-link">About</a></li>
+                <li class="navbar-item">
+                    <a href="services.html" class="navbar-link">Services</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="contact.html" class="navbar-link">Contact</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="booking.html" class="navbar-link">Book Now</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="track.html" class="navbar-link">Track Shipment</a>
+                </li>
+            </ul>
+            
+            <div class="navbar-actions">
+                <a href="login.html" class="btn btn-outline active">Login</a>
+                <a href="register.html" class="btn btn-primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <main class="login-section">
+        <div class="container">
+            <div class="login-wrapper">
+                <!-- Left Column: Login Form -->
+                <div class="login-form-container">
+                    <div class="form-header">
+                        <a href="index.html" class="back-home">
+                            <i class="fas fa-arrow-left"></i> Back to Home
+                        </a>
+                        <h1>Welcome Back</h1>
+                        <p>Sign in to your MizigoSmart account</p>
+                        <div class="register-link">
+                            New to MizigoSmart? <a href="register.html">Create an account</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form id="loginForm" class="login-form">
+                        <!-- Email Input -->
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope"></i> Email Address
+                            </label>
+                            <input type="email" id="email" class="form-control" placeholder="john.doe@example.com" required>
+                            <div class="error-message" id="emailError"></div>
+                        </div>
+                        
+                        <!-- Password Input -->
+                        <div class="form-group">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock"></i> Password
+                            </label>
+                            <div class="password-input">
+                                <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                                <button type="button" class="password-toggle" data-target="password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="error-message" id="passwordError"></div>
+                        </div>
+                        
+                        <!-- Remember Me & Forgot Password -->
+                        <div class="login-options">
+                            <label class="form-check">
+                                <input type="checkbox" id="rememberMe" class="form-check-input">
+                                <span class="form-check-label">Remember me</span>
+                            </label>
+                            <a href="forgot-password.html" class="forgot-password">
+                                Forgot password?
+                            </a>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-lg btn-full">
+                                <i class="fas fa-sign-in-alt"></i> Sign In
+                            </button>
+                        </div>
+                        
+                        <!-- Social Login -->
+                        <div class="social-login">
+                            <div class="divider">
+                                <span>Or sign in with</span>
+                            </div>
+                            <div class="social-buttons">
+                                <button type="button" class="btn btn-outline social-btn google-btn">
+                                    <i class="fab fa-google"></i> Google
+                                </button>
+                                <button type="button" class="btn btn-outline social-btn facebook-btn">
+                                    <i class="fab fa-facebook"></i> Facebook
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Demo Accounts -->
+                        <div class="demo-accounts">
+                            <h4><i class="fas fa-vial"></i> Demo Accounts</h4>
+                            <p>Try these demo accounts to explore the platform:</p>
+                            <div class="demo-grid">
+                                <div class="demo-account" data-email="admin@mizigosmart.com" data-password="admin123">
+                                    <div class="demo-role">Admin Account</div>
+                                    <div class="demo-credentials">
+                                        <strong>Email:</strong> admin@mizigosmart.com<br>
+                                        <strong>Password:</strong> admin123
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Right Column: Benefits & Features -->
+                <div class="login-features">
+                    <div class="features-card">
+                        <h2><i class="fas fa-shipping-fast"></i> Welcome Back to MizigoSmart</h2>
+                        
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h3>Dashboard Access</h3>
+                                    <p>Manage all your shipments from one centralized dashboard</p>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-history"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h3>Track History</h3>
+                                    <p>Access your complete shipment history and tracking data</p>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h3>Billing & Invoices</h3>
+                                    <p>View and download your invoices and payment history</p>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h3>Account Settings</h3>
+                                    <p>Update your profile, preferences, and notification settings</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Stats -->
+                        <div class="quick-stats">
+                            <h3><i class="fas fa-chart-bar"></i> Your Logistics at a Glance</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">24</div>
+                                    <div class="stat-label">Active Shipments</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">98%</div>
+                                    <div class="stat-label">On-time Delivery</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">156</div>
+                                    <div class="stat-label">Total Shipments</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Security Notice -->
+                        <div class="security-notice">
+                            <h3><i class="fas fa-shield-alt"></i> Secure Login</h3>
+                            <p>Your account is protected with bank-level encryption. Always ensure you're logging in through our official website.</p>
+                            <div class="security-tips">
+                                <p><strong>Security Tips:</strong></p>
+                                <ul>
+                                    <li>Never share your password</li>
+                                    <li>Log out from shared devices</li>
+                                    <li>Enable two-factor authentication</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgotPasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-key"></i> Reset Password</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Enter your email address and we'll send you a link to reset your password.</p>
+                <div class="form-group">
+                    <label for="resetEmail" class="form-label">Email Address</label>
+                    <input type="email" id="resetEmail" class="form-control" placeholder="your@email.com">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" id="sendResetLink">
+                        <i class="fas fa-paper-plane"></i> Send Reset Link
+                    </button>
+                    <button class="btn btn-outline" id="cancelReset">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="footer-brand">
+                        <i class="fas fa-shipping-fast"></i>
+                        MizigoSmart
+                    </a>
+                    <p class="footer-description">Revolutionizing logistics with smart technology and efficient solutions for modern businesses.</p>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="services.html">Freight Shipping</a></li>
+                        <li><a href="services.html">Warehouse Storage</a></li>
+                        <li><a href="services.html">Supply Chain</a></li>
+                        <li><a href="services.html">Last Mile Delivery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact Info</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Logistics St, Business City</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@mizigosmart.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MizigoSmart. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

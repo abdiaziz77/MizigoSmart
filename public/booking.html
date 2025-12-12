@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Now - MizigoSmart</title>
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/booking.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-shipping-fast"></i>
+                MizigoSmart
+            </a>
+            
+            <button class="navbar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="navbar-menu">
+                <li class="navbar-item">
+                    <a href="index.html" class="navbar-link">Home</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="about.html" class="navbar-link">About</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="services.html" class="navbar-link">Services</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="contact.html" class="navbar-link">Contact</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="booking.html" class="navbar-link active">Book Now</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="track.html" class="navbar-link">Track Shipment</a></li>
+            </ul>
+            
+            <div class="navbar-actions">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="register.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="booking-header">
+        <div class="container">
+            <div class="header-content">
+                <h1>Book Your Shipment</h1>
+                <p>Fast, reliable, and secure shipping solutions at your fingertips</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Booking Form Section -->
+        <section class="booking-section">
+            <div class="container">
+                <div class="booking-wrapper">
+                    <!-- Booking Form -->
+                    <div class="booking-form-container">
+                        <div class="form-header">
+                            <h2><i class="fas fa-shipping-fast"></i> Shipment Details</h2>
+                            <p>Fill out the form below to book your shipment</p>
+                        </div>
+                        
+                        <form id="bookingForm" class="booking-form">
+                            <!-- Step 1: Shipment Details -->
+                            <div class="form-step active" id="step1">
+                                <div class="step-header">
+                                    <div class="step-number">1</div>
+                                    <h3>Shipment Information</h3>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="shipmentType" class="form-label">
+                                            <i class="fas fa-box"></i> Shipment Type
+                                        </label>
+                                        <select id="shipmentType" class="form-control" required>
+                                            <option value="">Select Type</option>
+                                            <option value="document">Documents</option>
+                                            <option value="parcel">Small Parcel (Under 5kg)</option>
+                                            <option value="cargo">Cargo (5kg - 50kg)</option>
+                                            <option value="freight">Freight (Over 50kg)</option>
+                                            <option value="hazardous">Hazardous Materials</option>
+                                            <option value="perishable">Perishable Goods</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="weight" class="form-label">
+                                            <i class="fas fa-weight-hanging"></i> Weight (kg)
+                                        </label>
+                                        <input type="number" id="weight" class="form-control" min="0.1" step="0.1" placeholder="e.g., 10.5" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="dimensions" class="form-label">
+                                            <i class="fas fa-ruler-combined"></i> Dimensions (cm)
+                                        </label>
+                                        <div class="dimensions-input">
+                                            <input type="number" id="length" class="form-control" placeholder="Length" min="1" required>
+                                            <input type="number" id="width" class="form-control" placeholder="Width" min="1" required>
+                                            <input type="number" id="height" class="form-control" placeholder="Height" min="1" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="value" class="form-label">
+                                            <i class="fas fa-dollar-sign"></i> Declared Value (KES)
+                                        </label>
+                                        <input type="number" id="value" class="form-control" min="0" placeholder="Value for insurance" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="description" class="form-label">
+                                            <i class="fas fa-file-alt"></i> Description
+                                        </label>
+                                        <textarea id="description" class="form-control" rows="3" placeholder="Describe the contents of your shipment" required></textarea>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-shield-alt"></i> Special Requirements
+                                        </label>
+                                        <div class="checkbox-group">
+                                            <label class="form-check">
+                                                <input type="checkbox" id="fragile" class="form-check-input">
+                                                <span class="form-check-label">Fragile Items</span>
+                                            </label>
+                                            <label class="form-check">
+                                                <input type="checkbox" id="temperature" class="form-check-input">
+                                                <span class="form-check-label">Temperature Controlled</span>
+                                            </label>
+                                            <label class="form-check">
+                                                <input type="checkbox" id="express" class="form-check-input">
+                                                <span class="form-check-label">Express Delivery</span>
+                                            </label>
+                                            <label class="form-check">
+                                                <input type="checkbox" id="signature" class="form-check-input">
+                                                <span class="form-check-label">Signature Required</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-primary next-step" data-next="step2">
+                                        Next <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 2: Pickup Details -->
+                            <div class="form-step" id="step2">
+                                <div class="step-header">
+                                    <div class="step-number">2</div>
+                                    <h3>Pickup Information</h3>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="pickupName" class="form-label">
+                                            <i class="fas fa-user"></i> Contact Name
+                                        </label>
+                                        <input type="text" id="pickupName" class="form-control" placeholder="Full Name" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="pickupPhone" class="form-label">
+                                            <i class="fas fa-phone"></i> Phone Number
+                                        </label>
+                                        <input type="tel" id="pickupPhone" class="form-control" placeholder="07XX XXX XXX" required>
+                                        <small class="form-text">Enter your Safaricom number for M-Pesa</small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="pickupEmail" class="form-label">
+                                            <i class="fas fa-envelope"></i> Email Address
+                                        </label>
+                                        <input type="email" id="pickupEmail" class="form-control" placeholder="email@example.com" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="pickupAddress" class="form-label">
+                                            <i class="fas fa-map-marker-alt"></i> Pickup Address
+                                        </label>
+                                        <textarea id="pickupAddress" class="form-control" rows="2" placeholder="Street address" required></textarea>
+                                    </div>
+                                    
+                                    <div class="form-grid-2">
+                                        <div class="form-group">
+                                            <label for="pickupCounty" class="form-label">County</label>
+                                            <select id="pickupCounty" class="form-control" required>
+                                                <option value="">Select County</option>
+                                                <option value="Nairobi">Nairobi</option>
+                                                <option value="Mombasa">Mombasa</option>
+                                                <option value="Kisumu">Kisumu</option>
+                                                <option value="Nakuru">Nakuru</option>
+                                                <option value="Eldoret">Eldoret</option>
+                                                <option value="Thika">Thika</option>
+                                                <option value="Malindi">Malindi</option>
+                                                <option value="Kitale">Kitale</option>
+                                                <option value="Kakamega">Kakamega</option>
+                                                <option value="Kisii">Kisii</option>
+                                                <option value="Nyeri">Nyeri</option>
+                                                <option value="Meru">Meru</option>
+                                                <option value="Embu">Embu</option>
+                                                <option value="Machakos">Machakos</option>
+                                                <option value="Kiambu">Kiambu</option>
+                                                <option value="Muranga">Muranga</option>
+                                                <option value="Nyandarua">Nyandarua</option>
+                                                <option value="Nandi">Nandi</option>
+                                                <option value="Bungoma">Bungoma</option>
+                                                <option value="Busia">Busia</option>
+                                                <option value="Siaya">Siaya</option>
+                                                <option value="Homa Bay">Homa Bay</option>
+                                                <option value="Migori">Migori</option>
+                                                <option value="Kisumu">Kisumu</option>
+                                                <option value="Vihiga">Vihiga</option>
+                                                <option value="Bomet">Bomet</option>
+                                                <option value="Kericho">Kericho</option>
+                                                <option value="Kilifi">Kilifi</option>
+                                                <option value="Kwale">Kwale</option>
+                                                <option value="Lamu">Lamu</option>
+                                                <option value="Taita Taveta">Taita Taveta</option>
+                                                <option value="Garissa">Garissa</option>
+                                                <option value="Wajir">Wajir</option>
+                                                <option value="Mandera">Mandera</option>
+                                                <option value="Marsabit">Marsabit</option>
+                                                <option value="Isiolo">Isiolo</option>
+                                                <option value="Meru">Meru</option>
+                                                <option value="Tharaka Nithi">Tharaka Nithi</option>
+                                                <option value="Kitui">Kitui</option>
+                                                <option value="Makueni">Makueni</option>
+                                                <option value="Nyandarua">Nyandarua</option>
+                                                <option value="Nyeri">Nyeri</option>
+                                                <option value="Kirinyaga">Kirinyaga</option>
+                                                <option value="Muranga">Muranga</option>
+                                                <option value="Kiambu">Kiambu</option>
+                                                <option value="Turkana">Turkana</option>
+                                                <option value="West Pokot">West Pokot</option>
+                                                <option value="Samburu">Samburu</option>
+                                                <option value="Trans Nzoia">Trans Nzoia</option>
+                                                <option value="Uasin Gishu">Uasin Gishu</option>
+                                                <option value="Elgeyo Marakwet">Elgeyo Marakwet</option>
+                                                <option value="Nandi">Nandi</option>
+                                                <option value="Baringo">Baringo</option>
+                                                <option value="Laikipia">Laikipia</option>
+                                                <option value="Nakuru">Nakuru</option>
+                                                <option value="Narok">Narok</option>
+                                                <option value="Kajiado">Kajiado</option>
+                                                <option value="Kericho">Kericho</option>
+                                                <option value="Bomet">Bomet</option>
+                                                <option value="Kakamega">Kakamega</option>
+                                                <option value="Vihiga">Vihiga</option>
+                                                <option value="Bungoma">Bungoma</option>
+                                                <option value="Busia">Busia</option>
+                                                <option value="Siaya">Siaya</option>
+                                                <option value="Kisumu">Kisumu</option>
+                                                <option value="Homa Bay">Homa Bay</option>
+                                                <option value="Migori">Migori</option>
+                                                <option value="Kisii">Kisii</option>
+                                                <option value="Nyamira">Nyamira</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="pickupTown" class="form-label">Town/Area</label>
+                                            <input type="text" id="pickupTown" class="form-control" placeholder="e.g., Westlands, Karen, etc." required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="pickupDate" class="form-label">
+                                            <i class="fas fa-calendar-alt"></i> Preferred Pickup Date
+                                        </label>
+                                        <input type="date" id="pickupDate" class="form-control" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="pickupTime" class="form-label">
+                                            <i class="fas fa-clock"></i> Preferred Time Window
+                                        </label>
+                                        <select id="pickupTime" class="form-control" required>
+                                            <option value="">Select Time Window</option>
+                                            <option value="morning">Morning (8 AM - 12 PM)</option>
+                                            <option value="afternoon">Afternoon (12 PM - 4 PM)</option>
+                                            <option value="evening">Evening (4 PM - 8 PM)</option>
+                                            <option value="anytime">Anytime (8 AM - 8 PM)</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="pickupInstructions" class="form-label">
+                                            <i class="fas fa-clipboard-list"></i> Special Instructions
+                                        </label>
+                                        <textarea id="pickupInstructions" class="form-control" rows="2" placeholder="Gate code, building access, etc."></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-outline prev-step" data-prev="step1">
+                                        <i class="fas fa-arrow-left"></i> Back
+                                    </button>
+                                    <button type="button" class="btn btn-primary next-step" data-next="step3">
+                                        Next <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 3: Delivery Details -->
+                            <div class="form-step" id="step3">
+                                <div class="step-header">
+                                    <div class="step-number">3</div>
+                                    <h3>Delivery Information</h3>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="deliveryName" class="form-label">
+                                            <i class="fas fa-user"></i> Recipient Name
+                                        </label>
+                                        <input type="text" id="deliveryName" class="form-control" placeholder="Full Name" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="deliveryPhone" class="form-label">
+                                            <i class="fas fa-phone"></i> Phone Number
+                                        </label>
+                                        <input type="tel" id="deliveryPhone" class="form-control" placeholder="07XX XXX XXX" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="deliveryEmail" class="form-label">
+                                            <i class="fas fa-envelope"></i> Email Address
+                                        </label>
+                                        <input type="email" id="deliveryEmail" class="form-control" placeholder="email@example.com">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="deliveryAddress" class="form-label">
+                                            <i class="fas fa-map-marker-alt"></i> Delivery Address
+                                        </label>
+                                        <textarea id="deliveryAddress" class="form-control" rows="2" placeholder="Street address" required></textarea>
+                                    </div>
+                                    
+                                    <div class="form-grid-2">
+                                        <div class="form-group">
+                                            <label for="deliveryCounty" class="form-label">County</label>
+                                            <select id="deliveryCounty" class="form-control" required>
+                                                <option value="">Select County</option>
+                                                <option value="Nairobi">Nairobi</option>
+                                                <option value="Mombasa">Mombasa</option>
+                                                <option value="Kisumu">Kisumu</option>
+                                                <option value="Nakuru">Nakuru</option>
+                                                <option value="Eldoret">Eldoret</option>
+                                                <option value="Thika">Thika</option>
+                                                <option value="Malindi">Malindi</option>
+                                                <option value="Kitale">Kitale</option>
+                                                <option value="Kakamega">Kakamega</option>
+                                                <option value="Kisii">Kisii</option>
+                                                <option value="Nyeri">Nyeri</option>
+                                                <option value="Meru">Meru</option>
+                                                <option value="Embu">Embu</option>
+                                                <option value="Machakos">Machakos</option>
+                                                <option value="Kiambu">Kiambu</option>
+                                                <option value="Muranga">Muranga</option>
+                                                <option value="Nyandarua">Nyandarua</option>
+                                                <option value="Nandi">Nandi</option>
+                                                <option value="Bungoma">Bungoma</option>
+                                                <option value="Busia">Busia</option>
+                                                <option value="Siaya">Siaya</option>
+                                                <option value="Homa Bay">Homa Bay</option>
+                                                <option value="Migori">Migori</option>
+                                                <option value="Kisumu">Kisumu</option>
+                                                <option value="Vihiga">Vihiga</option>
+                                                <option value="Bomet">Bomet</option>
+                                                <option value="Kericho">Kericho</option>
+                                                <option value="Kilifi">Kilifi</option>
+                                                <option value="Kwale">Kwale</option>
+                                                <option value="Lamu">Lamu</option>
+                                                <option value="Taita Taveta">Taita Taveta</option>
+                                                <option value="Garissa">Garissa</option>
+                                                <option value="Wajir">Wajir</option>
+                                                <option value="Mandera">Mandera</option>
+                                                <option value="Marsabit">Marsabit</option>
+                                                <option value="Isiolo">Isiolo</option>
+                                                <option value="Meru">Meru</option>
+                                                <option value="Tharaka Nithi">Tharaka Nithi</option>
+                                                <option value="Kitui">Kitui</option>
+                                                <option value="Makueni">Makueni</option>
+                                                <option value="Nyandarua">Nyandarua</option>
+                                                <option value="Nyeri">Nyeri</option>
+                                                <option value="Kirinyaga">Kirinyaga</option>
+                                                <option value="Muranga">Muranga</option>
+                                                <option value="Kiambu">Kiambu</option>
+                                                <option value="Turkana">Turkana</option>
+                                                <option value="West Pokot">West Pokot</option>
+                                                <option value="Samburu">Samburu</option>
+                                                <option value="Trans Nzoia">Trans Nzoia</option>
+                                                <option value="Uasin Gishu">Uasin Gishu</option>
+                                                <option value="Elgeyo Marakwet">Elgeyo Marakwet</option>
+                                                <option value="Nandi">Nandi</option>
+                                                <option value="Baringo">Baringo</option>
+                                                <option value="Laikipia">Laikipia</option>
+                                                <option value="Nakuru">Nakuru</option>
+                                                <option value="Narok">Narok</option>
+                                                <option value="Kajiado">Kajiado</option>
+                                                <option value="Kericho">Kericho</option>
+                                                <option value="Bomet">Bomet</option>
+                                                <option value="Kakamega">Kakamega</option>
+                                                <option value="Vihiga">Vihiga</option>
+                                                <option value="Bungoma">Bungoma</option>
+                                                <option value="Busia">Busia</option>
+                                                <option value="Siaya">Siaya</option>
+                                                <option value="Kisumu">Kisumu</option>
+                                                <option value="Homa Bay">Homa Bay</option>
+                                                <option value="Migori">Migori</option>
+                                                <option value="Kisii">Kisii</option>
+                                                <option value="Nyamira">Nyamira</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="deliveryTown" class="form-label">Town/Area</label>
+                                            <input type="text" id="deliveryTown" class="form-control" placeholder="e.g., Westlands, Karen, etc." required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="deliveryDate" class="form-label">
+                                            <i class="fas fa-calendar-alt"></i> Expected Delivery Date
+                                        </label>
+                                        <input type="date" id="deliveryDate" class="form-control" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="deliveryInstructions" class="form-label">
+                                            <i class="fas fa-clipboard-list"></i> Delivery Instructions
+                                        </label>
+                                        <textarea id="deliveryInstructions" class="form-control" rows="2" placeholder="Leave at door, call upon arrival, etc."></textarea>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-truck"></i> Delivery Options
+                                        </label>
+                                        <div class="radio-group">
+                                            <label class="form-check">
+                                                <input type="radio" name="deliveryOption" value="standard" class="form-check-input" checked>
+                                                <span class="form-check-label">
+                                                    <strong>Standard Delivery</strong> (3-5 business days)
+                                                    <span class="option-price">KES 500</span>
+                                                </span>
+                                            </label>
+                                            <label class="form-check">
+                                                <input type="radio" name="deliveryOption" value="express" class="form-check-input">
+                                                <span class="form-check-label">
+                                                    <strong>Express Delivery</strong> (1-2 business days)
+                                                    <span class="option-price">KES 1,200</span>
+                                                </span>
+                                            </label>
+                                            <label class="form-check">
+                                                <input type="radio" name="deliveryOption" value="overnight" class="form-check-input">
+                                                <span class="form-check-label">
+                                                    <strong>Overnight Delivery</strong> (Next business day)
+                                                    <span class="option-price">KES 2,500</span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-outline prev-step" data-prev="step2">
+                                        <i class="fas fa-arrow-left"></i> Back
+                                    </button>
+                                    <button type="button" class="btn btn-primary next-step" data-next="step4">
+                                        Next <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 4: Review & Submit -->
+                            <div class="form-step" id="step4">
+                                <div class="step-header">
+                                    <div class="step-number">4</div>
+                                    <h3>Review & Confirm</h3>
+                                </div>
+                                
+                                <div class="review-section">
+                                    <h4><i class="fas fa-clipboard-check"></i> Review Your Shipment Details</h4>
+                                    
+                                    <div class="review-grid">
+                                        <!-- Shipment Details -->
+                                        <div class="review-card">
+                                            <h5><i class="fas fa-box"></i> Shipment Information</h5>
+                                            <div class="review-details" id="reviewShipment">
+                                                <!-- Will be populated by JavaScript -->
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Pickup Details -->
+                                        <div class="review-card">
+                                            <h5><i class="fas fa-map-marker-alt"></i> Pickup Details</h5>
+                                            <div class="review-details" id="reviewPickup">
+                                                <!-- Will be populated by JavaScript -->
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Delivery Details -->
+                                        <div class="review-card">
+                                            <h5><i class="fas fa-truck"></i> Delivery Details</h5>
+                                            <div class="review-details" id="reviewDelivery">
+                                                <!-- Will be populated by JavaScript -->
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Cost Summary -->
+                                        <div class="review-card">
+                                            <h5><i class="fas fa-receipt"></i> Cost Summary</h5>
+                                            <div class="cost-summary" id="costSummary">
+                                                <!-- Will be populated by JavaScript -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Terms & Conditions -->
+                                    <div class="terms-section">
+                                        <label class="form-check">
+                                            <input type="checkbox" id="terms" class="form-check-input" required>
+                                            <span class="form-check-label">
+                                                I agree to the <a href="#" class="terms-link">Terms & Conditions</a> and <a href="#" class="terms-link">Privacy Policy</a>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    
+                                    <!-- M-Pesa Payment Section -->
+                                    <div class="payment-section">
+                                        <h5><i class="fas fa-mobile-alt"></i> M-Pesa Payment</h5>
+                                        <div class="mpesa-instructions">
+                                            <p><strong>Total Amount to Pay: <span id="mpesaTotal">KES 0.00</span></strong></p>
+                                            <p>To complete your booking, follow these steps:</p>
+                                            <ol class="mpesa-steps">
+                                                <li>Go to M-Pesa on your phone</li>
+                                                <li>Select <strong>Lipa na M-Pesa</strong></li>
+                                                <li>Select <strong>Pay Bill</strong></li>
+                                                <li>Enter Business Number: <strong>123456</strong></li>
+                                                <li>Enter Account Number: <strong id="mpesaAccount">MS-0001</strong></li>
+                                                <li>Enter Amount: <strong id="mpesaAmount">KES 0.00</strong></li>
+                                                <li>Enter your M-Pesa PIN and send</li>
+                                            </ol>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="mpesaNumber" class="form-label">
+                                                <i class="fas fa-phone"></i> M-Pesa Phone Number
+                                            </label>
+                                            <input type="tel" id="mpesaNumber" class="form-control" placeholder="07XX XXX XXX" pattern="[0-9]{10}" required>
+                                            <small class="form-text">Enter the phone number registered with M-Pesa</small>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="transactionCode" class="form-label">
+                                                <i class="fas fa-receipt"></i> M-Pesa Transaction Code
+                                            </label>
+                                            <input type="text" id="transactionCode" class="form-control" placeholder="e.g., RFG45HJK90" required>
+                                            <small class="form-text">Enter the confirmation code received via SMS</small>
+                                        </div>
+                                        
+                                        <div class="payment-confirm">
+                                            <label class="form-check">
+                                                <input type="checkbox" id="mpesaConfirmed" class="form-check-input" required>
+                                                <span class="form-check-label">
+                                                    I confirm that I have completed the M-Pesa payment for the amount shown above
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-outline prev-step" data-prev="step3">
+                                        <i class="fas fa-arrow-left"></i> Back
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-paper-plane"></i> Confirm & Book Shipment
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Sidebar - Pricing & Help -->
+                    <div class="booking-sidebar">
+                        <!-- Pricing Calculator -->
+                        <div class="sidebar-card">
+                            <h3><i class="fas fa-calculator"></i> Instant Quote</h3>
+                            <div class="price-estimate">
+                                <div class="estimate-item">
+                                    <span>Base Rate</span>
+                                    <span id="baseRate">KES 0.00</span>
+                                </div>
+                                <div class="estimate-item">
+                                    <span>Weight Surcharge</span>
+                                    <span id="weightSurcharge">KES 0.00</span>
+                                </div>
+                                <div class="estimate-item">
+                                    <span>Distance Charge</span>
+                                    <span id="distanceCharge">KES 0.00</span>
+                                </div>
+                                <div class="estimate-item">
+                                    <span>Insurance</span>
+                                    <span id="insuranceFee">KES 0.00</span>
+                                </div>
+                                <div class="estimate-item">
+                                    <span>Express Fee</span>
+                                    <span id="expressFee">KES 0.00</span>
+                                </div>
+                                <div class="estimate-item">
+                                    <span>Delivery Option</span>
+                                    <span id="deliveryFee">KES 0.00</span>
+                                </div>
+                                <div class="estimate-item total">
+                                    <strong>Estimated Total</strong>
+                                    <strong id="estimatedTotal">KES 0.00</strong>
+                                </div>
+                            </div>
+                            <p class="estimate-note">* Final price may vary based on actual measurements</p>
+                        </div>
+                        
+                        <!-- Help & Support -->
+                        <div class="sidebar-card">
+                            <h3><i class="fas fa-question-circle"></i> Need Help?</h3>
+                            <div class="help-options">
+                                <div class="help-item">
+                                    <i class="fas fa-phone"></i>
+                                    <div>
+                                        <h4>Call Us</h4>
+                                        <p>+254 7XX XXX XXX</p>
+                                    </div>
+                                </div>
+                                <div class="help-item">
+                                    <i class="fas fa-comments"></i>
+                                    <div>
+                                        <h4>Live Chat</h4>
+                                        <p>Available 24/7</p>
+                                    </div>
+                                </div>
+                                <div class="help-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <div>
+                                        <h4>Email Support</h4>
+                                        <p>support@mizigosmart.co.ke</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Why Choose Us -->
+                        <div class="sidebar-card">
+                            <h3><i class="fas fa-star"></i> Why Choose Us?</h3>
+                            <ul class="benefits-list">
+                                <li><i class="fas fa-check-circle"></i> Real-time tracking</li>
+                                <li><i class="fas fa-check-circle"></i> 24/7 customer support</li>
+                                <li><i class="fas fa-check-circle"></i> M-Pesa payment</li>
+                                <li><i class="fas fa-check-circle"></i> Insurance coverage</li>
+                                <li><i class="fas fa-check-circle"></i> On-time delivery guarantee</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Tracking Info -->
+                        <div class="sidebar-card">
+                            <h3><i class="fas fa-shipping-fast"></i> After Booking</h3>
+                            <p>Once your shipment is booked, you'll receive:</p>
+                            <ul class="tracking-info">
+                                <li><i class="fas fa-barcode"></i> Unique tracking number</li>
+                                <li><i class="fas fa-envelope"></i> Email confirmation</li>
+                                <li><i class="fas fa-map"></i> Real-time updates</li>
+                                <li><i class="fas fa-file-invoice"></i> Digital invoice</li>
+                            </ul>
+                            <a href="track.html" class="btn btn-outline btn-sm btn-full">
+                                <i class="fas fa-search"></i> Track Existing Shipment
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Booking Success Modal -->
+        <div class="success-modal" id="successModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Booking Successful!</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Your shipment has been booked successfully. Here are your details:</p>
+                    <div class="booking-confirmation" id="bookingConfirmation">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" id="printConfirmation">
+                            <i class="fas fa-print"></i> Print Confirmation
+                        </button>
+                        <button class="btn btn-outline" id="newBooking">
+                            <i class="fas fa-plus"></i> New Booking
+                        </button>
+                        <a href="track.html" class="btn btn-outline">
+                            <i class="fas fa-search"></i> Track Shipment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="footer-brand">
+                        <i class="fas fa-shipping-fast"></i>
+                        MizigoSmart
+                    </a>
+                    <p class="footer-description">Revolutionizing logistics with smart technology and efficient solutions for Kenyan businesses.</p>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="services.html#freight">Freight Shipping</a></li>
+                        <li><a href="services.html#warehouse">Warehouse Storage</a></li>
+                        <li><a href="services.html#scm">Supply Chain</a></li>
+                        <li><a href="services.html#lastmile">Last Mile Delivery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact Info</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Westlands, Nairobi, Kenya</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>+254 7XX XXX XXX</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@mizigosmart.co.ke</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MizigoSmart. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/booking.js"></script>
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

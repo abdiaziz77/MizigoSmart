@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drivers Management - MizigoSmart Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/drivers.css">
+</head>
+<body class="admin-layout">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-brand">
+                <i class="fas fa-shipping-fast"></i>
+                <span>MizigoSmart</span>
+                <small>Admin</small>
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-profile">
+            <div class="profile-image">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="profile-info">
+                <h4 id="adminName">Admin User</h4>
+                <span class="profile-role">Administrator</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="bookings.html" class="sidebar-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Bookings</span>
+                        <span class="badge badge-primary" id="bookingBadge">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trips.html" class="sidebar-link">
+                        <i class="fas fa-route"></i>
+                        <span>Trips</span>
+                        <span class="badge badge-warning" id="tripBadge">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trucks.html" class="sidebar-link">
+                        <i class="fas fa-truck"></i>
+                        <span>Trucks</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="drivers.html" class="sidebar-link active">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Drivers</span>
+                        <span class="badge badge-success" id="driverBadge">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="users.html" class="sidebar-link">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="analytics.html" class="sidebar-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html" class="sidebar-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+ 
+    </aside>
+
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <div class="navbar-left">
+            <button class="navbar-toggle" id="navbarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="navbar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="globalSearch" placeholder="Search drivers...">
+            </div>
+        </div>
+        
+        <div class="navbar-right">
+            <div class="navbar-notifications">
+                <button class="notification-btn" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h4>Notifications</h4>
+                        <button class="mark-read">Mark all as read</button>
+                    </div>
+                    <div class="notification-list">
+                        <div class="notification-item unread">
+                            <div class="notification-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="notification-content">
+                                <h4>New Driver Registered</h4>
+                                <p>John Doe has completed registration</p>
+                                <span class="notification-time">5 min ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item unread">
+                            <div class="notification-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="notification-content">
+                                <h4>License Expiring</h4>
+                                <p>Driver ID: DRV-003 license expires in 7 days</p>
+                                <span class="notification-time">1 hour ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="notification-content">
+                                <h4>Truck Assignment</h4>
+                                <p>TRK-012 assigned to Driver: DRV-007</p>
+                                <span class="notification-time">3 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navbar-user">
+                <div class="user-dropdown" id="userDropdown">
+                    <button class="user-btn">
+                        <div class="user-avatar">
+                            <span>AU</span>
+                        </div>
+                        <div class="user-info">
+                            <span id="userName">Admin User</span>
+                            <small>Administrator</small>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i> My Profile
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <a href="help.html" class="dropdown-item">
+                            <i class="fas fa-question-circle"></i> Help & Support
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" id="adminLogoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-left">
+                    <h1>Driver Management</h1>
+                    <p class="page-subtitle">Manage and monitor your entire driver fleet</p>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="addDriverBtn">
+                            <i class="fas fa-plus"></i> Add New Driver
+                        </button>
+                        <button class="btn btn-outline" id="exportDrivers">
+                            <i class="fas fa-file-export"></i> Export
+                        </button>
+                        <button class="btn btn-outline" id="refreshDrivers">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <span id="successText">Driver added successfully!</span>
+                <button class="close-btn" onclick="this.parentElement.classList.remove('show')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Error loading drivers</span>
+                <button class="close-btn" onclick="this.parentElement.classList.remove('show')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Drivers Overview -->
+            <div class="drivers-overview">
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Total Drivers</h3>
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="stat-value" id="totalDrivers">0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> <span id="driversThisMonth">0</span> this month
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Active</h3>
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value" id="activeDrivers">0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> <span id="availableNow">0</span> available
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>On Trip</h3>
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="stat-value" id="onTripDrivers">0</div>
+                    <div class="stat-change negative">
+                        <i class="fas fa-arrow-down"></i> <span id="tripsToday">0</span> today
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-header">
+                        <h3>Available</h3>
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" id="availableDrivers">0</div>
+                    <div class="stat-change warning">
+                        <i class="fas fa-exclamation-triangle"></i> <span id="unassignedDrivers">0</span> unassigned
+                    </div>
+                </div>
+            </div>
+
+            <!-- Driver Cards Grid -->
+            <div class="section-header">
+                <h3>Featured Drivers</h3>
+                <button class="btn-link" id="viewAllDrivers">View All</button>
+            </div>
+            <div class="driver-cards-grid" id="driverCardsGrid">
+                <!-- Driver cards will be loaded here -->
+            </div>
+
+            <!-- Top Performers -->
+            <div class="top-performers-card">
+                <div class="card-header">
+                    <h3>Top Performers</h3>
+                    <div class="card-actions">
+                        <select id="performancePeriod" class="form-select form-select-sm">
+                            <option value="week">This Week</option>
+                            <option value="month" selected>This Month</option>
+                            <option value="quarter">This Quarter</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="performers-list" id="topPerformersList">
+                        <!-- Top performers will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drivers Table -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>All Drivers</h3>
+                    <div class="table-actions">
+                        <div class="table-info" id="tableInfo">
+                            Showing 0 drivers
+                        </div>
+                        <div class="table-controls">
+                            <div class="filter-group">
+                                <label>Status:</label>
+                                <select id="driverStatusFilter" class="form-select form-select-sm">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="on-trip">On Trip</option>
+                                    <option value="off-duty">Off Duty</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Sort by:</label>
+                                <select id="sortBy" class="form-select form-select-sm">
+                                    <option value="name">Name</option>
+                                    <option value="rating">Rating</option>
+                                    <option value="date">Join Date</option>
+                                    <option value="trips">Total Trips</option>
+                                </select>
+                            </div>
+                            <select id="itemsPerPage" class="items-per-page">
+                                <option value="10">10 per page</option>
+                                <option value="25">25 per page</option>
+                                <option value="50" selected>50 per page</option>
+                                <option value="100">100 per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="data-table" id="driversTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="selectAll">
+                                </th>
+                                <th>Driver ID</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>License</th>
+                                <th>Status</th>
+                                <th>Assigned Truck</th>
+                                <th>Rating</th>
+                                <th>Join Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="driversTableBody">
+                            <!-- Drivers will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-footer">
+                    <div class="pagination-info" id="paginationInfo">
+                        Page 1 of 1
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pagination-btn" id="firstPage" disabled>
+                            <i class="fas fa-angle-double-left"></i>
+                        </button>
+                        <button class="pagination-btn" id="prevPage" disabled>
+                            <i class="fas fa-angle-left"></i>
+                        </button>
+                        <div class="page-numbers" id="pageNumbers">
+                            <button class="page-number active">1</button>
+                        </div>
+                        <button class="pagination-btn" id="nextPage" disabled>
+                            <i class="fas fa-angle-right"></i>
+                        </button>
+                        <button class="pagination-btn" id="lastPage" disabled>
+                            <i class="fas fa-angle-double-right"></i>
+                        </button>
+                    </div>
+                    <div class="bulk-actions">
+                        <select id="bulkAction" class="form-select form-select-sm">
+                            <option value="">Bulk Actions</option>
+                            <option value="activate">Activate</option>
+                            <option value="deactivate">Deactivate</option>
+                            <option value="assign">Assign Truck</option>
+                            <option value="delete">Delete</option>
+                        </select>
+                        <button class="btn btn-sm btn-outline" id="applyBulkAction">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
+        <div class="container-fluid">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>&copy; 2024 MizigoSmart Admin Panel. Version 1.0.0</p>
+                </div>
+                <div class="footer-right">
+                    <div class="footer-links">
+                        <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                        <a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a>
+                        <a href="#"><i class="fas fa-headset"></i> Support</a>
+                        <a href="#"><i class="fas fa-book"></i> Documentation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add/Edit Driver Modal -->
+    <div class="modal" id="driverFormModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="formModalTitle">Add New Driver</h3>
+                <button class="modal-close" onclick="closeModal('#driverFormModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="driverForm">
+                    <div class="form-tabs">
+                        <button type="button" class="form-tab active" data-tab="personal">Personal Info</button>
+                        <button type="button" class="form-tab" data-tab="license">License Info</button>
+                        <button type="button" class="form-tab" data-tab="employment">Employment</button>
+                        <button type="button" class="form-tab" data-tab="emergency">Emergency Contact</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="personalTab">
+                        <div class="form-group photo-upload">
+                            <label>Driver Photo</label>
+                            <div class="photo-preview" id="photoPreview">
+                                <i class="fas fa-user-circle"></i>
+                                <p>Click to upload driver photo</p>
+                                <small>Recommended: 500x500 pixels, JPG or PNG</small>
+                            </div>
+                            <input type="file" id="driverPhoto" accept="image/*" style="display: none;" 
+                                   onchange="previewDriverPhoto(event)">
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Driver ID *</label>
+                                <input type="text" id="driverId" required placeholder="e.g., DRV-001">
+                                <small class="form-hint">Auto-generate ID: <span id="autoGenerateId" class="link">Generate</span></small>
+                            </div>
+                            <div class="form-group">
+                                <label>First Name *</label>
+                                <input type="text" id="firstName" required placeholder="John">
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name *</label>
+                                <input type="text" id="lastName" required placeholder="Doe">
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" id="email" required placeholder="john.doe@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone *</label>
+                                <div class="phone-input">
+                                    <select id="phoneCode" class="phone-code">
+                                        <option value="+1">+1 (US)</option>
+                                        <option value="+44">+44 (UK)</option>
+                                        <option value="+91">+91 (IN)</option>
+                                        <option value="+61">+61 (AU)</option>
+                                    </select>
+                                    <input type="tel" id="phone" required placeholder="1234567890">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" id="dob">
+                            </div>
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select id="gender">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="prefer-not">Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Nationality</label>
+                                <select id="nationality">
+                                    <option value="">Select Nationality</option>
+                                    <option value="us">American</option>
+                                    <option value="gb">British</option>
+                                    <option value="in">Indian</option>
+                                    <option value="au">Australian</option>
+                                    <option value="ca">Canadian</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea id="address" rows="2" placeholder="Full address..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="licenseTab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>License Number *</label>
+                                <input type="text" id="licenseNumber" required placeholder="e.g., DL123456789">
+                            </div>
+                            <div class="form-group">
+                                <label>License Type *</label>
+                                <select id="licenseType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="class-a">Class A (CDL)</option>
+                                    <option value="class-b">Class B</option>
+                                    <option value="class-c">Class C</option>
+                                    <option value="heavy">Heavy Vehicle</option>
+                                    <option value="hazardous">Hazardous Materials</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Issued Date *</label>
+                                <input type="date" id="licenseIssued" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Expiry Date *</label>
+                                <input type="date" id="licenseExpiry" required>
+                                <small class="form-hint" id="expiryHint"></small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>License Issuing Authority</label>
+                            <input type="text" id="issuingAuthority" placeholder="e.g., DMV California">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>License Scan/Photo</label>
+                            <div class="file-upload">
+                                <i class="fas fa-upload"></i>
+                                <p>Upload license document</p>
+                                <small>PDF, JPG or PNG (Max 5MB)</small>
+                                <input type="file" id="licenseFile" accept=".pdf,.jpg,.jpeg,.png">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="employmentTab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Employment Status *</label>
+                                <select id="employmentStatus" required>
+                                    <option value="full-time">Full Time</option>
+                                    <option value="part-time">Part Time</option>
+                                    <option value="contract">Contract</option>
+                                    <option value="freelance">Freelance</option>
+                                    <option value="probation">Probation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Hire Date</label>
+                                <input type="date" id="hireDate">
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Assigned Truck</label>
+                                <select id="assignedTruck">
+                                    <option value="">No Truck Assigned</option>
+                                    <option value="TRK-001">TRK-001 - Mercedes-Benz Actros</option>
+                                    <option value="TRK-002">TRK-002 - Volvo FH16</option>
+                                    <option value="TRK-003">TRK-003 - Scania R730</option>
+                                    <option value="TRK-004">TRK-004 - MAN TGX</option>
+                                    <option value="TRK-005">TRK-005 - Kenworth W900</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Initial Rating</label>
+                                <div class="rating-input">
+                                    <div class="rating-stars-select">
+                                        <i class="far fa-star" data-rating="1"></i>
+                                        <i class="far fa-star" data-rating="2"></i>
+                                        <i class="far fa-star" data-rating="3"></i>
+                                        <i class="far fa-star" data-rating="4"></i>
+                                        <i class="far fa-star" data-rating="5"></i>
+                                    </div>
+                                    <input type="number" id="initialRating" min="0" max="5" step="0.5" value="4.5" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Experience (Years)</label>
+                                <input type="number" id="experienceYears" min="0" max="50" value="5" placeholder="5">
+                            </div>
+                            <div class="form-group">
+                                <label>Hourly Rate ($)</label>
+                                <div class="currency-input">
+                                    <span class="currency-symbol">$</span>
+                                    <input type="number" id="hourlyRate" min="0" step="0.01" placeholder="25.00">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Specializations</label>
+                            <div class="specializations">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="specializations" value="long-haul"> Long Haul
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="specializations" value="hazardous"> Hazardous Materials
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="specializations" value="refrigerated"> Refrigerated
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="specializations" value="oversize"> Oversize Loads
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="specializations" value="city"> City Delivery
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="emergencyTab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Emergency Contact Name</label>
+                                <input type="text" id="emergencyName" placeholder="Contact name">
+                            </div>
+                            <div class="form-group">
+                                <label>Emergency Contact Phone</label>
+                                <input type="tel" id="emergencyPhone" placeholder="+1234567890">
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Relationship</label>
+                                <select id="emergencyRelationship">
+                                    <option value="">Select Relationship</option>
+                                    <option value="spouse">Spouse</option>
+                                    <option value="parent">Parent</option>
+                                    <option value="sibling">Sibling</option>
+                                    <option value="friend">Friend</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Emergency Contact Email</label>
+                                <input type="email" id="emergencyEmail" placeholder="contact@example.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Medical Information</label>
+                            <textarea id="medicalInfo" rows="3" placeholder="Any medical conditions or allergies..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Insurance Information</label>
+                            <textarea id="insuranceInfo" rows="2" placeholder="Insurance provider and policy number..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" id="prevTabBtn">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-primary" id="nextTabBtn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button type="submit" class="btn btn-success" id="submitDriverBtn" style="display: none;">
+                            <i class="fas fa-check"></i> Save Driver
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Driver Details Modal -->
+    <div class="modal" id="driverDetailsModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="driverDetailTitle">Driver Details</h3>
+                <button class="modal-close" onclick="closeModal('#driverDetailsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="driver-details-container" id="driverDetailsContainer">
+                    <!-- Driver details will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('#driverDetailsModal')">
+                    <i class="fas fa-times"></i> Close
+                </button>
+                <button class="btn btn-warning" id="deactivateDriverBtn">
+                    <i class="fas fa-user-slash"></i> Deactivate
+                </button>
+                <button class="btn btn-primary" id="editDriverBtn">
+                    <i class="fas fa-edit"></i> Edit Driver
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Truck Modal -->
+    <div class="modal" id="assignTruckModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Assign Truck to Driver</h3>
+                <button class="modal-close" onclick="closeModal('#assignTruckModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="assignTruckForm">
+                    <div class="form-group">
+                        <label>Select Driver *</label>
+                        <select id="assignDriverSelect" required>
+                            <option value="">Select a driver</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Truck *</label>
+                        <select id="assignTruckSelect" required>
+                            <option value="">Select a truck</option>
+                            <option value="TRK-001">TRK-001 - Mercedes-Benz Actros</option>
+                            <option value="TRK-002">TRK-002 - Volvo FH16</option>
+                            <option value="TRK-003">TRK-003 - Scania R730</option>
+                            <option value="TRK-004">TRK-004 - MAN TGX</option>
+                            <option value="TRK-005">TRK-005 - Kenworth W900</option>
+                        </select>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Assignment Date *</label>
+                            <input type="date" id="assignmentDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Expected Duration</label>
+                            <select id="assignmentDuration">
+                                <option value="indefinite">Indefinite</option>
+                                <option value="1-week">1 Week</option>
+                                <option value="1-month">1 Month</option>
+                                <option value="3-months">3 Months</option>
+                                <option value="6-months">6 Months</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="assignmentNotes" rows="3" placeholder="Any notes about this assignment..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('#assignTruckModal')">Cancel</button>
+                <button class="btn btn-primary" id="saveAssignmentBtn">Assign Truck</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Driver Modal -->
+    <div class="modal" id="scheduleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="scheduleModalTitle">Schedule Driver</h3>
+                <button class="modal-close" onclick="closeModal('#scheduleModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="scheduleForm">
+                    <div class="form-group">
+                        <label>Select Date *</label>
+                        <input type="date" id="scheduleDate" required>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Start Time *</label>
+                            <input type="time" id="scheduleStart" required value="08:00">
+                        </div>
+                        <div class="form-group">
+                            <label>End Time *</label>
+                            <input type="time" id="scheduleEnd" required value="17:00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Shift Type *</label>
+                        <select id="scheduleShift" required>
+                            <option value="">Select Shift</option>
+                            <option value="morning">Morning (6 AM - 2 PM)</option>
+                            <option value="afternoon">Afternoon (2 PM - 10 PM)</option>
+                            <option value="night">Night (10 PM - 6 AM)</option>
+                            <option value="full">Full Day (8 AM - 6 PM)</option>
+                            <option value="split">Split Shift</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Route/Trip</label>
+                        <select id="scheduleRoute">
+                            <option value="">Select Route</option>
+                            <option value="local">Local Delivery</option>
+                            <option value="interstate">Interstate</option>
+                            <option value="long-haul">Long Haul</option>
+                            <option value="city">City Routes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="scheduleNotes" rows="3" placeholder="Any special instructions..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('#scheduleModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-calendar-check"></i> Schedule
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h3>Confirm Deletion</h3>
+                <button class="modal-close" onclick="closeModal('#deleteModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="confirmation-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <p id="deleteMessage">Are you sure you want to delete this driver? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('#deleteModal')">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading drivers...</p>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="quick-stats">
+        <div class="quick-stat">
+            <i class="fas fa-user-clock"></i>
+            <div>
+                <span class="stat-value" id="onDutyCount">0</span>
+                <span class="stat-label">On Duty</span>
+            </div>
+        </div>
+        <div class="quick-stat">
+            <i class="fas fa-tachometer-alt"></i>
+            <div>
+                <span class="stat-value" id="avgRating">0.0</span>
+                <span class="stat-label">Avg Rating</span>
+            </div>
+        </div>
+        <div class="quick-stat">
+            <i class="fas fa-road"></i>
+            <div>
+                <span class="stat-value" id="totalMiles">0</span>
+                <span class="stat-label">Total Miles</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/drivers.js"></script>
+</body>
+</html>
