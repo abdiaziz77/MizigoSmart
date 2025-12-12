@@ -197,38 +197,73 @@ body {
     margin: 0;
 }
 
-.story-image {
-    position: relative;
+/* Updated Story Cards Section */
+.story-cards {
+    flex: 1;
+    padding: 1rem;
+}
+
+.story-icon-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.story-icon-card {
+    background: white;
     border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-}
-
-.story-img {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-    transition: var(--transition);
-}
-
-.story-image:hover .story-img {
-    transform: scale(1.05);
-}
-
-.image-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-    color: white;
     padding: 2rem;
-    transform: translateY(100%);
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid #eaeaea;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.story-icon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color);
+}
+
+.story-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
     transition: var(--transition);
 }
 
-.story-image:hover .image-overlay {
-    transform: translateY(0);
+.story-icon-card:hover .story-icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+    background: linear-gradient(135deg, #3b82f6, var(--primary-color));
+}
+
+.story-icon-wrapper i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.story-icon-card h4 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.story-icon-card p {
+    color: var(--gray-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
 }
 
 /* Mission & Vision */
@@ -375,7 +410,7 @@ body {
     z-index: -1;
 }
 
-/* Team Section */
+/* Updated Team Section with Avatar Icons */
 .team-section {
     padding: 5rem 0;
     background-color: var(--light-color);
@@ -393,6 +428,11 @@ body {
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: var(--transition);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .team-card:hover {
@@ -400,51 +440,52 @@ body {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-.team-image {
+/* Avatar Styles */
+.team-avatar {
     position: relative;
-    height: 300px;
-    overflow: hidden;
+    width: 140px;
+    height: 140px;
+    margin-bottom: 1.5rem;
 }
 
-.team-img {
+.avatar-wrapper {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: var(--transition);
-}
-
-.team-card:hover .team-img {
-    transform: scale(1.1);
-}
-
-.team-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(37, 99, 235, 0.9);
+    background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
     color: white;
-    opacity: 0;
+    font-size: 4.5rem;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
     transition: var(--transition);
 }
 
-.team-card:hover .team-overlay {
-    opacity: 1;
+.team-card:hover .avatar-wrapper {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
 }
 
-.team-overlay p {
-    font-style: italic;
-    text-align: center;
-    font-size: 1.1rem;
+.avatar-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    background: var(--secondary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    border: 3px solid white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .team-info {
-    padding: 2rem;
+    width: 100%;
 }
 
 .team-info h3 {
@@ -457,17 +498,41 @@ body {
     color: var(--primary-color);
     font-weight: 600;
     margin-bottom: 1rem;
+    font-size: 0.95rem;
 }
 
 .team-bio {
     color: var(--gray-color);
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.team-quote {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--secondary-color);
+    text-align: left;
+}
+
+.team-quote i {
+    color: var(--secondary-color);
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+.team-quote span {
+    color: var(--gray-color);
+    font-style: italic;
+    font-size: 0.9rem;
 }
 
 .team-social {
     display: flex;
-    gap: 1rem;
+    gap: 0.8rem;
+    justify-content: center;
 }
 
 .team-social a {
@@ -486,6 +551,7 @@ body {
 .team-social a:hover {
     background: var(--primary-color);
     color: white;
+    transform: translateY(-3px);
 }
 
 /* Stats */
@@ -823,6 +889,10 @@ body {
         gap: 3rem;
     }
     
+    .story-icon-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
     .mv-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -846,6 +916,15 @@ body {
     .cta-actions {
         flex-direction: column;
         align-items: center;
+    }
+    
+    .team-avatar {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .avatar-wrapper {
+        font-size: 4rem;
     }
 }
 
@@ -872,6 +951,10 @@ body {
     
     .navbar-toggle {
         display: block;
+    }
+    
+    .story-icon-cards {
+        grid-template-columns: 1fr;
     }
     
     .mv-grid {
@@ -903,6 +986,10 @@ body {
         flex-direction: column;
         gap: 1.5rem;
     }
+    
+    .team-card {
+        padding: 1.5rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -928,5 +1015,33 @@ body {
     
     .footer-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .story-icon-card {
+        padding: 1.5rem;
+    }
+    
+    .story-icon-wrapper {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .story-icon-wrapper i {
+        font-size: 2rem;
+    }
+    
+    .team-avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .avatar-wrapper {
+        font-size: 3rem;
+    }
+    
+    .avatar-badge {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
     }
 }
